@@ -4,6 +4,7 @@ import { boardData } from "../../data";
 import iconBoard from "../../assets/icon-board.svg";
 import iconDark from "../../assets/icon-dark-theme.svg";
 import iconLight from "../../assets/icon-light-theme.svg";
+import iconHideSideBar from "../../assets/icon-hide-sidebar.svg";
 import Switch from "react-switch";
 function Sidebar() {
   const globalState = useContext(UserContext);
@@ -17,7 +18,7 @@ function Sidebar() {
 
 
   return (
-    <div className="hidden bg-[white] dark:bg-dark-gray  w-[261px] h-[100vh] absolute left-0 top-0 z-0 pt-[112px] border-r border-dark-lines md:block lg:w-[300px] ">
+    <div className={`hidden transition-all bg-[white] dark:bg-dark-gray  w-[261px] h-[100vh] absolute ${globalState.hideSideBar === false ? `left-0` : `left-[-500px]` } top-0 z-10 pt-[112px] border-r border-dark-lines md:block lg:w-[300px]`}>
       <div>
         {boardData.boards.map((data, key) => {
           return (
@@ -49,11 +50,11 @@ function Sidebar() {
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-center mx-auto absolute bottom-[96px] w-full   ">
+        <div className="flex items-center justify-center mx-auto absolute bottom-[96px] w-full">
         <div className="flex items-center justify-center w-[235px] h-[48px] rounded-[6px] bg-light-bg dark:bg-dark-bg">
         <label className="flex items-center">
             <img src={iconLight} alt="iconLight"/>
-           
+
             <Switch
               className="mx-[23.67px]"
               onChange={handleChange}
@@ -68,7 +69,13 @@ function Sidebar() {
         </div>
       
         </div>
-       
+
+        <div className="flex items-center justify-start mx-auto absolute bottom-[32px] w-full">
+        <label className="flex items-center ml-[24px] lg:ml-[34px] hover:cursor-pointer" onClick={() => globalState.setHideSideBar(!false)} >
+            <img src={iconHideSideBar} alt="iconHideSideBar"/>
+            <span className=" ml-[15px] text-[15px] font-bold leading-[19px] text-medium-gray">Hide Sidebar</span>
+        </label>
+        </div>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import Header from "../Header/Header.js";
 function Layout(props) {
 
   return (
-    <div>
+    <div  className="transition-all">
     <Header />
      {props.children}
     </div>

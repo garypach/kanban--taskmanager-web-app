@@ -2,8 +2,10 @@ import React, { createContext, useState, useEffect } from "react";
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
+    //current board
     const [boardActive, setBoardActive] = useState(0);
     
+    //light and dark mode
     function useLightMode(){
       let tempTheme;
       if(localStorage.theme){
@@ -26,11 +28,17 @@ const UserProvider = ({ children }) => {
       return [colorTheme,setTheme]
     }
 
+    //hide sidebar
+    const [hideSideBar, setHideSideBar] = useState(false);
+
+
     return (
       <UserContext.Provider value={{
            boardActive,
            setBoardActive,
            useLightMode,
+           hideSideBar,
+           setHideSideBar
            }}>
         {children}
       </UserContext.Provider>
