@@ -5,8 +5,12 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
+    letterSpacing:{
+      wide:'2.4px',
+    },
     colors: {
       'black': '#000112',
+      'white':'#ffff',
       'purple': '#635FC7',
       'purple-hover': '#A8A4FF',
       'dark-bg': '#20212C',

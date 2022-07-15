@@ -27,7 +27,7 @@ function Header() {
             <div className='flex items-center'>
             <div className='w-[48px] h-[32px] flex items-center justify-center bg-purple rounded-[24px] md:w-[192.62px] md:h-[48px] hover:bg-purple-hover hover:cursor-pointer '>
                 <img className="md:hidden" src={addTask} alt='add-task'/>
-                <span className='hidden md:block text-[15px] font-bold leading-[19px]'>+ Add New Task</span>
+                <span className='hidden md:block text-[15px] font-bold leading-[19px] text-white'>+ Add New Task</span>
             </div>
 
             <div className='ml-[16px] '>

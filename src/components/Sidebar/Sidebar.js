@@ -18,7 +18,10 @@ function Sidebar() {
 
 
   return (
-    <div className={`hidden transition-all bg-[white] dark:bg-dark-gray  w-[261px] h-[100vh] absolute ${globalState.hideSideBar === false ? `left-0` : `left-[-500px]` } top-0 z-10 pt-[112px] border-r border-dark-lines md:block lg:w-[300px]`}>
+    <div className={`hidden transition-all bg-[white] dark:bg-dark-gray  min-w-[261px] h-[100vh] ${globalState.hideSideBar === false ? `relative left-0 ` : `absolute left-[-500px] ` } z-30 pt-[31px] border-r border-light-lines dark:border-dark-lines md:block lg:min-w-[300px]`}>
+      <div className="mb-[10px] ml-[24px] lg:ml-[32px] text-medium-gray text-[12px] font-bold leading-[15px] tracking-wide">
+      ALL BOARDS {boardData.boards.length}
+      </div>
       <div>
         {boardData.boards.map((data, key) => {
           return (
