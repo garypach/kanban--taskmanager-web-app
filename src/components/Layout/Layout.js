@@ -4,7 +4,7 @@ function Layout(props) {
 
   return (
     <div  className="transition-all">
-    <Header />
+    <Header/>
      {props.children}
     </div>
   );

@@ -2,6 +2,9 @@ import React, { createContext, useState, useEffect } from "react";
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
+    //mobileMenuActive
+    const [mobileMenuActive, setMobileMenuActive] = useState(false);
+
     //current board
     const [boardActive, setBoardActive] = useState(0);
     
@@ -38,7 +41,9 @@ const UserProvider = ({ children }) => {
            setBoardActive,
            useLightMode,
            hideSideBar,
-           setHideSideBar
+           setHideSideBar,
+           mobileMenuActive,
+           setMobileMenuActive
            }}>
         {children}
       </UserContext.Provider>
