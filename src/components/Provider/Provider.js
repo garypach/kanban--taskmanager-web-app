@@ -5,6 +5,10 @@ const UserProvider = ({ children }) => {
     //mobileMenuActive
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
 
+    //ViewTaskMenu
+    const [viewTaskMenu, setViewTaskMenu] = useState(true);
+    const [viewTaskMenuActive, setViewTaskMenuActive] = useState(0);
+    const [viewTaskFrom, setViewTaskFrom] = useState(0);
     //current board
     const [boardActive, setBoardActive] = useState(0);
     
@@ -43,7 +47,13 @@ const UserProvider = ({ children }) => {
            hideSideBar,
            setHideSideBar,
            mobileMenuActive,
-           setMobileMenuActive
+           setMobileMenuActive,
+           viewTaskMenu,
+           setViewTaskMenu,
+           viewTaskMenuActive,
+           setViewTaskMenuActive,
+           viewTaskFrom,
+           setViewTaskFrom,
            }}>
         {children}
       </UserContext.Provider>
