@@ -6,9 +6,16 @@ const UserProvider = ({ children }) => {
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
 
     //ViewTaskMenu
-    const [viewTaskMenu, setViewTaskMenu] = useState(true);
+    const [viewTaskMenu, setViewTaskMenu] = useState(false);
     const [viewTaskMenuActive, setViewTaskMenuActive] = useState(0);
     const [viewTaskFrom, setViewTaskFrom] = useState(0);
+
+    //delete task
+    const [deleteTaskMenu, setDeleteTaskMenu] = useState(false);
+
+     //delete board
+     const [deleteBoardMenu, setDeleteBoardMenu] = useState(false);
+
     //current board
     const [boardActive, setBoardActive] = useState(0);
     
@@ -54,6 +61,10 @@ const UserProvider = ({ children }) => {
            setViewTaskMenuActive,
            viewTaskFrom,
            setViewTaskFrom,
+           deleteTaskMenu,
+           setDeleteTaskMenu,
+           deleteBoardMenu,
+           setDeleteBoardMenu,
            }}>
         {children}
       </UserContext.Provider>

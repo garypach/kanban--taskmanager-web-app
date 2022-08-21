@@ -8,6 +8,8 @@ import {boardData} from './data'
 import ScrollContainer from 'react-indiana-drag-scroll'
 import MobileMenu from './components/MobileMenu/MobileMenu';
 import ViewTaskMenu from './components/ViewTaskMenu/ViewTaskMenu';
+import DeleteTaskMenu from './components/DeleteTaskMenu/DeleteTaskMenu';
+import DeleteBoardMenu from './components/DeleteBoardMenu/DeleteBoardMenu';
 function App() {
   const globalState =  useContext(UserContext);
 
@@ -16,7 +18,9 @@ function App() {
       
       <div className='flex h-[100vh] bg-light-bg dark:bg-dark-bg w-full'>
       <MobileMenu/>
+      <DeleteBoardMenu/>
       <ViewTaskMenu/>
+      <DeleteTaskMenu/>
       <Sidebar/>
       <ShowSideBar/>
       <ScrollContainer className="scroll-container" horizontal={true} hideScrollbars={true} nativeMobileScroll={false}>
