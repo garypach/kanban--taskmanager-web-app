@@ -10,6 +10,7 @@ import MobileMenu from './components/MobileMenu/MobileMenu';
 import ViewTaskMenu from './components/ViewTaskMenu/ViewTaskMenu';
 import DeleteTaskMenu from './components/DeleteTaskMenu/DeleteTaskMenu';
 import DeleteBoardMenu from './components/DeleteBoardMenu/DeleteBoardMenu';
+import AddTaskMenu from './components/AddTaskMenu/AddTaskMenu';
 function App() {
   const globalState =  useContext(UserContext);
 
@@ -21,6 +22,7 @@ function App() {
       <DeleteBoardMenu/>
       <ViewTaskMenu/>
       <DeleteTaskMenu/>
+      <AddTaskMenu/>
       <Sidebar/>
       <ShowSideBar/>
       <ScrollContainer className="scroll-container" horizontal={true} hideScrollbars={true} nativeMobileScroll={false}>

@@ -18,6 +18,10 @@ const UserProvider = ({ children }) => {
 
     //current board
     const [boardActive, setBoardActive] = useState(0);
+
+    //AddTaskMenu
+    const [addTaskMenu, setAddTaskMenu] = useState(false);
+    const [addTaskFrom, setAddTaskFrom] = useState(boardActive);
     
     //light and dark mode
     function useLightMode(){
@@ -65,6 +69,10 @@ const UserProvider = ({ children }) => {
            setDeleteTaskMenu,
            deleteBoardMenu,
            setDeleteBoardMenu,
+           addTaskMenu, 
+           setAddTaskMenu,
+           addTaskFrom,
+           setAddTaskFrom
            }}>
         {children}
       </UserContext.Provider>
