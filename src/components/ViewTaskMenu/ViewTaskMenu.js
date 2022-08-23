@@ -14,10 +14,16 @@ function classNames(...classes) {
 function ViewTaskMenu() {
   const globalState = useContext(UserContext);
 
+  const handleEditTaskMenu = () => {
+    globalState.setViewTaskMenu(false);
+    globalState.setEditTaskMenu(true);
+
+  };
+
   const handleDeleteTaskMenu = () => {
     globalState.setViewTaskMenu(false);
     globalState.setDeleteTaskMenu(true);
-    console.log("click");
+ 
   };
 
   return (
@@ -60,7 +66,7 @@ function ViewTaskMenu() {
               >
                 <Menu.Items className="origin-top-right absolute right-[-65px] mt-2 rounded-md z-30 shadow-lg w-[192px] bg-white dark:bg-dark-gray ring-1 dark:text-white ring-black ring-opacity-5 focus:outline-none">
                   <div className="py-1">
-                    <Menu.Item>
+                    <Menu.Item onClick={() => handleEditTaskMenu()}>
                       {({ active }) => (
                         <span
                           className={classNames(

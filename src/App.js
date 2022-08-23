@@ -11,6 +11,7 @@ import ViewTaskMenu from './components/ViewTaskMenu/ViewTaskMenu';
 import DeleteTaskMenu from './components/DeleteTaskMenu/DeleteTaskMenu';
 import DeleteBoardMenu from './components/DeleteBoardMenu/DeleteBoardMenu';
 import AddTaskMenu from './components/AddTaskMenu/AddTaskMenu';
+import EditTaskMenu from './components/EditTaskMenu/EditTaskMenu';
 function App() {
   const globalState =  useContext(UserContext);
 
@@ -21,6 +22,7 @@ function App() {
       <MobileMenu/>
       <DeleteBoardMenu/>
       <ViewTaskMenu/>
+      <EditTaskMenu/>
       <DeleteTaskMenu/>
       <AddTaskMenu/>
       <Sidebar/>
