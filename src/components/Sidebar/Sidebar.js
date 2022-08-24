@@ -16,6 +16,9 @@ function Sidebar() {
     setLightMode(nextChecked);
   };
 
+  const handleAddNewBoard = () => {
+    globalState.setAddNewBoardMenu(true)
+  };
 
   return (
     <div className={`hidden transition-all bg-[white] dark:bg-dark-gray  min-w-[261px] h-[100vh] ${globalState.hideSideBar === false ? `relative left-0 ` : `absolute left-[-500px] ` } z-30 pt-[31px] border-r border-light-lines dark:border-dark-lines md:block lg:min-w-[300px]`}>
@@ -28,7 +31,7 @@ function Sidebar() {
             <div
               key={key}
               className={`flex items-center pl-[32px] w-[240px] lg:w-[276px] h-[48px] rounded-r-[24px] text-[#828FA3] ${
-                globalState.boardActive === key ? "bg-purple text-[white]" : ""
+                globalState.boardActive === key && globalState.addNewBoardMenu === false ? "bg-purple text-[white]" : ""
               } hover:cursor-pointer`}
               onClick={() => globalState.setBoardActive(key)}
             >
@@ -43,12 +46,14 @@ function Sidebar() {
             </div>
           );
         })}
-        <div className="flex items-center pl-[32px] w-[276px] h-[48px] hover:cursor-pointer">
+        <div className={`flex items-center pl-[32px] rounded-r-[24px] w-[276px] h-[48px] hover:cursor-pointer  ${
+                globalState.addNewBoardMenu === true ? "bg-purple text-[white]" : "text-purple"
+              }`}  onClick={() => handleAddNewBoard()}>
           <div className="flex items-center">
             <div>
               <img className="" src={iconBoard} alt="iconBoard" />
             </div>
-            <div className="ml-[16px] text-[15px] font-bold leading-[19px] text-purple ">
+            <div className={`ml-[16px] text-[15px] font-bold leading-[19px]  `}>
               +Create New Board
             </div>
           </div>

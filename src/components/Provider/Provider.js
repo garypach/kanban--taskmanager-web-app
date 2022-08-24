@@ -5,6 +5,12 @@ const UserProvider = ({ children }) => {
     //mobileMenuActive
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
 
+     //AddNewBoardMenu
+     const [addNewBoardMenu, setAddNewBoardMenu] = useState(false);
+
+     //AddNewBoardMenu
+     const [editBoardMenu, setEditBoardMenu] = useState(false);
+
     //ViewTaskMenu
     const [viewTaskMenu, setViewTaskMenu] = useState(false);
     const [viewTaskMenuActive, setViewTaskMenuActive] = useState(0);
@@ -81,6 +87,10 @@ const UserProvider = ({ children }) => {
            setEditTaskMenu,
            editTaskFrom,
            setEditTaskFrom,
+           addNewBoardMenu,
+           setAddNewBoardMenu,
+           editBoardMenu, 
+           setEditBoardMenu
            }}>
         {children}
       </UserContext.Provider>

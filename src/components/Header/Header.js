@@ -70,7 +70,7 @@ function Header(props) {
           <div className="ml-[16px] ">
             <Menu as="div" className="inline-block">
               <div>
-                <Menu.Button className="inline-flex rounded-md shadow-sm bg-white dark:bg-dark-gray text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+                <Menu.Button className="inline-flex rounded-md shadow-sm bg-white dark:bg-dark-gray text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 ">
                   <DotsVerticalIcon
                     className="h-[20px] w-5 "
                     aria-hidden="true"
@@ -89,7 +89,8 @@ function Header(props) {
               >
                 <Menu.Items className="origin-top-right absolute right-0 mt-[22px] rounded-md z-30 shadow-lg w-[192px] bg-white dark:bg-dark-gray ring-1 dark:text-white ring-black ring-opacity-5 focus:outline-none">
                   <div className="py-1">
-                    <Menu.Item>
+                    <Menu.Item onClick={() =>
+              globalState.setEditBoardMenu(true)}>
                       {({ active }) => (
                         <span
                           className={classNames(

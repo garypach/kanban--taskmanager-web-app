@@ -12,6 +12,8 @@ import DeleteTaskMenu from './components/DeleteTaskMenu/DeleteTaskMenu';
 import DeleteBoardMenu from './components/DeleteBoardMenu/DeleteBoardMenu';
 import AddTaskMenu from './components/AddTaskMenu/AddTaskMenu';
 import EditTaskMenu from './components/EditTaskMenu/EditTaskMenu';
+import AddNewBoardMenu from './components/AddNewBoardMenu/AddNewBoardMenu';
+import EditBoardMenu from './components/EditBoardMenu/EditBoardMenu';
 function App() {
   const globalState =  useContext(UserContext);
 
@@ -20,6 +22,8 @@ function App() {
       
       <div className='flex h-[100vh] bg-light-bg dark:bg-dark-bg w-full'>
       <MobileMenu/>
+      <AddNewBoardMenu/>
+      <EditBoardMenu/>
       <DeleteBoardMenu/>
       <ViewTaskMenu/>
       <EditTaskMenu/>

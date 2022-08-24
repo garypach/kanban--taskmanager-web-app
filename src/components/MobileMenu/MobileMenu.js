@@ -15,7 +15,13 @@ function MobileMenu() {
     setLightMode(nextChecked);
   };
 
+  const handleAddNewBoard = () => {
+    globalState.setMobileMenuActive(false)
+    globalState.setAddNewBoardMenu(true)
+    console.log('click')
+  };
 
+  
   return (
     <div className={` mx-auto left-0 right-0 w-full h-full ${globalState.mobileMenuActive === true ? `absolute` : 'hidden'} md:hidden`}>
         <div className="absolute z-20 mx-auto left-0 right-0 bg-black opacity-50 w-full h-full " onClick={() => globalState.setMobileMenuActive(false)}></div>
@@ -44,7 +50,7 @@ function MobileMenu() {
             </div>
           );
         })}
-        <div className="flex items-center pl-[32px] w-[276px] h-[48px] hover:cursor-pointer">
+        <div className="flex items-center pl-[32px] w-[276px] h-[48px] hover:cursor-pointer" onClick={() => handleAddNewBoard()}>
           <div className="flex items-center">
             <div>
               <img className="" src={iconBoard} alt="iconBoard" />
