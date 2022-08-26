@@ -12,7 +12,7 @@ function TasksColumn(props) {
             <div>
             {data.tasks.map((data, key) => {
               return(
-                <Tasks key={key} taskTitle={data.title} subtaskslength={data.subtasks.length} taskKey={key} />
+               <Tasks key={key} taskTitle={data.title} subtaskslength={data.subtasks.length} taskKey={key} />
               );
             })}
             </div>

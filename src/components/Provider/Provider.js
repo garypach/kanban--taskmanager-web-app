@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
@@ -16,6 +17,11 @@ const UserProvider = ({ children }) => {
     const [viewTaskMenuActive, setViewTaskMenuActive] = useState(0);
     const [viewTaskFrom, setViewTaskFrom] = useState(0);
 
+    const closeTaskMenu = () =>{
+      setViewTaskMenu(false);
+      setViewTaskMenuActive(0);
+      setViewTaskFrom(0);
+    }
     //delete task
     const [deleteTaskMenu, setDeleteTaskMenu] = useState(false);
 
@@ -32,7 +38,11 @@ const UserProvider = ({ children }) => {
     //EditTaskMenu
     const [editTaskMenu, setEditTaskMenu] = useState(false);
     const [editTaskFrom, setEditTaskFrom] = useState(viewTaskMenuActive);
-    
+    const closeEditTaskMenu = () =>{
+      setEditTaskMenu(false);
+      setViewTaskMenuActive(0);
+      setViewTaskFrom(0);
+    }
     //light and dark mode
     function useLightMode(){
       let tempTheme;
@@ -90,7 +100,9 @@ const UserProvider = ({ children }) => {
            addNewBoardMenu,
            setAddNewBoardMenu,
            editBoardMenu, 
-           setEditBoardMenu
+           setEditBoardMenu,
+           closeTaskMenu,
+           closeEditTaskMenu
            }}>
         {children}
       </UserContext.Provider>

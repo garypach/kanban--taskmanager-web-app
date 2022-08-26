@@ -1,4 +1,4 @@
-import { useContext, Fragment,useState } from "react";
+import { useContext, Fragment, useState} from "react";
 import { UserContext } from "../Provider/Provider.js";
 import { boardData } from "../../data";
 import { Menu, Transition } from "@headlessui/react";
@@ -9,45 +9,67 @@ function classNames(...classes) {
 }
 
 function EditTaskMenu() {
+  
   const globalState = useContext(UserContext);
-  const [title,setTitle] = useState(  boardData.boards[globalState.boardActive].columns[
-    globalState.viewTaskFrom
-  ].tasks[globalState.viewTaskMenuActive].title)
-  const[titleError,setTitleError] = useState(false)
-  const checkForTitle =(e)=>{
-      function titleValid(text){
-          return /^[a-z ,.'-]+$/i.test(text)
-      }
-      if(titleValid(title)){
-      }else{
-        setTitleError(true)
-      }
-  }
-  const removeTitleError =(e)=>{
-    setTitleError(false)    
-  }
+ 
+  const [title, setTitle] = useState(
+    boardData.boards[globalState.boardActive].columns[globalState.viewTaskFrom]
+      .tasks.length === 0
+      ? ""
+      : boardData.boards[globalState.boardActive].columns[
+          globalState.viewTaskFrom
+        ].tasks[globalState.viewTaskMenuActive].title
+  );
+  const [titleError, setTitleError] = useState(false);
+  const checkForTitle = (e) => {
+    function titleValid(text) {
+      return /^[a-z ,.'-]+$/i.test(text);
+    }
+    if (titleValid(title)) {
+    } else {
+      setTitleError(true);
+    }
+  };
+  const removeTitleError = (e) => {
+    setTitleError(false);
+  };
   const editTitle = (e) => {
     const title = e.target.value;
     setTitle(title);
-    boardData.boards[globalState.boardActive].columns[globalState.viewTaskFrom].tasks[globalState.viewTaskMenuActive].title = title
-    
-    console.log(boardData.boards[globalState.boardActive].columns[globalState.viewTaskFrom].tasks[globalState.viewTaskMenuActive].title)
+
+    boardData.boards[globalState.boardActive].columns[
+      globalState.viewTaskFrom
+    ].tasks[globalState.viewTaskMenuActive].title = title;
   };
 
-  const [desc,setDesc] = useState('')
+  const [desc, setDesc] = useState( boardData.boards[globalState.boardActive].columns[globalState.viewTaskFrom]
+    .tasks.length === 0
+    ? ""
+    : boardData.boards[globalState.boardActive].columns[
+        globalState.viewTaskFrom
+      ].tasks[globalState.viewTaskMenuActive].description
+  );
   const editDesc = (e) => {
     const desc = e.target.value;
     setDesc(desc);
-    boardData.boards[globalState.boardActive].columns[globalState.viewTaskFrom].tasks[globalState.viewTaskMenuActive].description = desc
-    
-    console.log(boardData.boards[globalState.boardActive].columns[globalState.viewTaskFrom].tasks[globalState.viewTaskMenuActive].description)
-  };
 
-  const[subtasks,setSubTasks] = useState(boardData.boards[globalState.boardActive].columns[globalState.viewTaskFrom].tasks[globalState.viewTaskMenuActive].subtasks)
+    boardData.boards[globalState.boardActive].columns[
+      globalState.viewTaskFrom
+    ].tasks[globalState.viewTaskMenuActive].description = desc;
+  };
+  const [subtasks, setSubTasks] = useState(
+    boardData.boards[globalState.boardActive].columns[globalState.viewTaskFrom]
+      .tasks.length === 0
+      ? []
+      : boardData.boards[globalState.boardActive].columns[
+          globalState.viewTaskFrom
+        ].tasks[globalState.viewTaskMenuActive].subtasks
+  );
   const addSubtask = () => {
-    subtasks.push({ title: "",isCompleted: false });
+    subtasks.push({ title: "", isCompleted: false });
     setSubTasks([...subtasks]);
   };
+
   return (
     <div
       className={` mx-auto left-0 right-0 w-full h-full ${
@@ -55,67 +77,66 @@ function EditTaskMenu() {
       }`}
     >
       <div
-        className="absolute z-20 mx-auto left-0 right-0 bg-black opacity-50 w-full h-full "
+        className="absolute z-40  mx-auto left-0 right-0 bg-black opacity-50 w-full h-full "
         onClick={() => globalState.setEditTaskMenu(false)}
       ></div>
       <div
-        className={`absolute top-[80px] mx-auto left-0 right-0 transition-all bg-[white] dark:bg-dark-gray min-w-[264px] max-w-[343px] min-h-[322px] z-30 p-[24px]  rounded-[6px] border-r border-light-lines dark:border-dark-lines `}
+        className={`absolute top-[80px] mx-auto left-0 right-0 transition-all bg-[white] dark:bg-dark-gray min-w-[264px] max-w-[343px] min-h-[322px] z-40  p-[24px]  rounded-[6px] border-r border-light-lines dark:border-dark-lines `}
       >
         <div className="mb-[24px] flex items-center">
           <div className="flex items-center">
             <div className=" dark:text-white text-[18px] font-bold leading-[23px]">
-               Edit Task
+              Edit Task
             </div>
           </div>
         </div>
         <div className="mb-[24px] text-medium-gray text-[13px] leading-[23px] ">
-        <div>
+          <div>
             <div className="font-bold text-medium-gray  dark:text-white">
-                Title
+              Title
             </div>
-           <div>
-           <input
-             onChange={editTitle}
-             value={title}
-            
-             type="text" className={`mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+            <div>
+              <input
+                onChange={editTitle}
+                value={title}
+                type="text"
+                className={`mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                     focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
                     invalid:border-pink-500 invalid:text-pink-600
                     focus:invalid:border-pink-500 focus:invalid:ring-pink-500 ${
-                        titleError ? "border-red" : ""
-                      } ` }       
-            placeholder="e.g. Take coffee break"
-             onBlur={checkForTitle}
-             onFocus={removeTitleError}
-             
-           />
-            <p className={`mt-2 text-pink-600 text-sm ${
-                        titleError ? "visible" : "invisible"
-                      }`}>
+                      titleError ? "border-red" : ""
+                    } `}
+                placeholder="e.g. Take coffee break"
+                onBlur={checkForTitle}
+                onFocus={removeTitleError}
+              />
+              <p
+                className={`mt-2 text-pink-600 text-sm ${
+                  titleError ? "visible" : "invisible"
+                }`}
+              >
                 Please provide a valid title.
-            </p>
-       </div>
-         </div>
+              </p>
+            </div>
+          </div>
         </div>
         <div className="mb-[24px] text-medium-gray text-[13px] leading-[23px]">
-        <div>
-        <div className="font-bold text-medium-gray  dark:text-white">
-                Description
+          <div>
+            <div className="font-bold text-medium-gray  dark:text-white">
+              Description
             </div>
-           <div className="">
-           <textarea
-             onChange={editDesc}
-             value={desc}
-            
-             type="text" className={`mt-1 block w-full px-[15px] pt-[8px] pb-[33px] min-h-[112px] break-words bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+            <div className="">
+              <textarea
+                onChange={editDesc}
+                value={desc}
+                type="text"
+                className={`mt-1 block w-full px-[15px] pt-[8px] pb-[33px] min-h-[112px] break-words bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                     focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
-                    ` }       
-            placeholder="e.g. It’s always good to take a break. This 15 minute break will  recharge the batteries a little."
-
-           />
-   
-       </div>
-         </div>
+                    `}
+                placeholder="e.g. It's always good to take a break. This 15 minute break will  recharge the batteries a little."
+              />
+            </div>
+          </div>
         </div>
         <div className="mb-[16px] text-medium-gray  dark:text-white text-[12px]  font-bold leading-[15px]">
           Subtasks
@@ -123,40 +144,52 @@ function EditTaskMenu() {
         <div className="mb-[24px]">
           {subtasks.map((data, key) => {
             return (
-              <div key={key} className={`flex items-center text-[#828FA3] w-full mb-[12px] `}>
-                    <div className="w-full">
-                          <input type="text" className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+              <div
+                key={key}
+                className={`flex items-center text-[#828FA3] w-full mb-[12px] `}
+              >
+                <div className="w-full">
+                  <input
+                    type="text"
+                    className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                     focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
-                   " value={data.title} 
-                   placeholder="e.g. Make coffee"
-                   onChange={e => {
-                    subtasks[key].title = e.target.value;
-                    setSubTasks([...subtasks]);
-                  }} />
-                    </div>
-                    <div>
-                    <XIcon
-                className="-mr-1 ml-2 h-5 w-5 text-purple hover:cursor-pointer"
-                aria-hidden="true"
-                onClick={() => {
-                    subtasks.splice(key,1);
-                    setSubTasks([...subtasks]);
-                    console.log(subtasks)
-                }}
-                        />
-                    </div>
-             
-            </div>
+                   "
+                    value={data.title}
+                    placeholder="e.g. Make coffee"
+                    onChange={(e) => {
+                      subtasks[key].title = e.target.value;
+                      setSubTasks([...subtasks]);
+                    }}
+                  />
+                </div>
+                <div>
+                  <XIcon
+                    className="-mr-1 ml-2 h-5 w-5 text-purple hover:cursor-pointer"
+                    aria-hidden="true"
+                    onClick={() => {
+                      subtasks.splice(key, 1);
+                      setSubTasks([...subtasks]);
+                      console.log(subtasks);
+                    }}
+                  />
+                </div>
+              </div>
             );
           })}
         </div>
-        <button className="mb-[24px] bg-light-lines w-full rounded-[20px] py-[8px] pb-[9px] px-[85px] text-purple text-[13px] font-bold" onClick={addSubtask}>
-        + Add New Subtask
+        <button
+          className="mb-[24px] bg-light-lines w-full rounded-[20px] py-[8px] pb-[9px] px-[85px] text-purple text-[13px] font-bold"
+          onClick={addSubtask}
+        >
+          + Add New Subtask
         </button>
         <div className="mb-[8px] dark:text-white text-medium-gray text-[12px] font-bold leading-[15px] ">
           Current Status
         </div>
-        <Menu as="div" className="relative inline-block text-left w-full mb-[24px]">
+        <Menu
+          as="div"
+          className="relative inline-block text-left w-full mb-[24px]"
+        >
           <div>
             <Menu.Button className="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-dark-gray text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
               Options
@@ -239,7 +272,7 @@ function EditTaskMenu() {
           </Transition>
         </Menu>
         <button className=" bg-purple w-full rounded-[20px] py-[8px] pb-[9px] px-[87px] text-white text-[13px]">
-              Save Changes
+          Save Changes
         </button>
       </div>
     </div>

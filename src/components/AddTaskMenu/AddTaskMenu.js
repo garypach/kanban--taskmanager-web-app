@@ -45,11 +45,11 @@ function AddTaskMenu() {
       }`}
     >
       <div
-        className="absolute z-20 mx-auto left-0 right-0 bg-black opacity-50 w-full h-full "
+        className="absolute z-40  mx-auto left-0 right-0 bg-black opacity-50 w-full h-full "
         onClick={() => globalState.setAddTaskMenu(false)}
       ></div>
       <div
-        className={`absolute top-[80px] mx-auto left-0 right-0 transition-all bg-[white] dark:bg-dark-gray min-w-[264px] max-w-[343px] min-h-[322px] z-30 p-[24px]  rounded-[6px] border-r border-light-lines dark:border-dark-lines `}
+        className={`absolute top-[80px] mx-auto left-0 right-0 transition-all bg-[white] dark:bg-dark-gray min-w-[264px] max-w-[343px] min-h-[322px] z-40  p-[24px]  rounded-[6px] border-r border-light-lines dark:border-dark-lines `}
       >
         <div className="mb-[24px] flex items-center">
           <div className="flex items-center">
