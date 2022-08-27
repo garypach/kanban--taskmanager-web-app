@@ -42,9 +42,9 @@ function ViewTaskMenu() {
           <div className="flex items-center">
             <div className=" dark:text-white text-[18px] font-bold leading-[23px]">
               {
-              boardData.boards[globalState.boardActive].columns[
-                  globalState.viewTaskFrom
-                ].tasks.length === 0 ? '' :   boardData.boards[globalState.boardActive].columns[
+             boardData.boards[globalState.boardActive].columns.length === 0 || boardData.boards[globalState.boardActive].columns[
+              globalState.viewTaskFrom
+            ].tasks.length  === 0 ? '' :   boardData.boards[globalState.boardActive].columns[
                   globalState.viewTaskFrom
                 ].tasks[globalState.viewTaskMenuActive].title
               }
@@ -102,9 +102,9 @@ function ViewTaskMenu() {
 
         <div className="mb-[24px] text-medium-gray text-[13px] leading-[23px]">
           {
-             boardData.boards[globalState.boardActive].columns[
-              globalState.viewTaskFrom
-            ].tasks.length === 0 ? '' :   boardData.boards[globalState.boardActive].columns[
+           boardData.boards[globalState.boardActive].columns.length === 0  || boardData.boards[globalState.boardActive].columns[
+            globalState.viewTaskFrom
+          ].tasks.length  === 0 ? '' :   boardData.boards[globalState.boardActive].columns[
               globalState.viewTaskFrom
             ].tasks[globalState.viewTaskMenuActive].description
           }
@@ -113,9 +113,9 @@ function ViewTaskMenu() {
           Subtasks
         </div>
         <div className="mb-[24px]">
-          {     boardData.boards[globalState.boardActive].columns[
+          {   boardData.boards[globalState.boardActive].columns.length === 0 || boardData.boards[globalState.boardActive].columns[
               globalState.viewTaskFrom
-            ].tasks.length === 0 ? '' :   boardData.boards[globalState.boardActive].columns[
+            ].tasks.length === 0 ?  '' :   boardData.boards[globalState.boardActive].columns[
               globalState.viewTaskFrom
             ].tasks[globalState.viewTaskMenuActive].subtasks.map((data, key) => {
             return (

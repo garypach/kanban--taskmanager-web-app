@@ -26,9 +26,9 @@ function DeleteTaskMenu() {
             Are you sure you want to delete the "
             {
              
-             boardData.boards[globalState.boardActive].columns[
+             boardData.boards[globalState.boardActive].columns.length === 0 || boardData.boards[globalState.boardActive].columns[
               globalState.viewTaskFrom
-            ].tasks.length === 0 ? '' :   boardData.boards[globalState.boardActive].columns[
+            ].tasks.length  === 0 ? '' :   boardData.boards[globalState.boardActive].columns[
               globalState.viewTaskFrom
             ].tasks[globalState.viewTaskMenuActive].title
               

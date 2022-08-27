@@ -15,22 +15,17 @@ function AddNewBoardMenu() {
       return /^[a-z ,.'-]+$/i.test(text);
     }
     if (titleValid(title)) {
+      return true
     } else {
       setTitleError(true);
+      return false
     }
   };
   const removeTitleError = (e) => {
     setTitleError(false);
   };
 
-  const [columns, setColumns] = useState([
-    {
-      name: "",
-      tasks: [
-     
-      ],
-    },
-  ]);
+  const [columns, setColumns] = useState([]);
   const addColumns = () => {
     columns.push({
       name: "",
@@ -41,12 +36,7 @@ function AddNewBoardMenu() {
     setColumns([...columns]);
   };
 
-  const [newBoard, setNewBoard] = useState({ name: '', columns: [{
-      name: "",
-      tasks: [
-      
-      ],
-    }]});
+  const [newBoard, setNewBoard] = useState({ name: '', columns: []});
 
   const isFirstRender = useRef(true)
 
@@ -54,7 +44,13 @@ useEffect(() => {
  
   if (!isFirstRender.current) { 
     boardData.boards = [...boardData.boards, newBoard]
-    console.log(boardData)
+  }
+}, [newBoard])
+
+useEffect(() => {
+ 
+  if (!isFirstRender.current) { 
+    
   }
 }, [newBoard])
 
@@ -63,8 +59,18 @@ useEffect(() => {
   }, [])
 
   const saveNewBoard = () => {
-  setNewBoard({name:title,columns:[...columns]})
-  globalState.setAddNewBoardMenu(false);
+    if(checkForTitle() === true){
+      setNewBoard({name:title,columns:[...columns]})
+      globalState.setAddNewBoardMenu(false);
+      if(globalState.addNewBoardMenu === false){
+        setTitle('')
+        setColumns([])
+        setNewBoard({ name: '', columns: []})
+      }
+    }else{
+      setTitleError(true)
+    }
+
   };
 
   return (
@@ -96,6 +102,7 @@ useEffect(() => {
               <input
                 onChange={handleTitleInput}
                 value={title}
+                
                 type="text"
                 className={`mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                     focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
@@ -141,18 +148,7 @@ useEffect(() => {
                     }}
                   />
                 </div>
-                {key === 0 ? (
-                  <div className="invisible">
-                    <XIcon
-                      className="-mr-1 ml-2 h-5 w-5 text-purple hover:cursor-pointer"
-                      aria-hidden="true"
-                      onClick={() => {
-                        columns.splice(key, 1);
-                        setColumns([...columns]);
-                      }}
-                    />
-                  </div>
-                ) : (
+               
                   <div>
                     <XIcon
                       className="-mr-1 ml-2 h-5 w-5 text-purple hover:cursor-pointer"
@@ -163,7 +159,6 @@ useEffect(() => {
                       }}
                     />
                   </div>
-                )}
               </div>
             );
           })}

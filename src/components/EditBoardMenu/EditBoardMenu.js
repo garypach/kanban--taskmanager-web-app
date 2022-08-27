@@ -1,13 +1,15 @@
-import { useContext,useState } from "react";
+import { useContext,useEffect,useRef,useState } from "react";
 import { UserContext } from "../Provider/Provider.js";
 import { boardData } from "../../data";
 import { XIcon } from "@heroicons/react/solid";
 
 function EditBoardMenu() {
   const globalState = useContext(UserContext);
-  const [title,setTitle] = useState('')
+  const [saveEdit,setSaveEdit] = useState(false)
+  const [title,setTitle] = useState(boardData.boards[globalState.boardActive].name)
   const handleTitleInput = (e)=>{
     setTitle(e.target.value)
+    setSaveEdit(true)
   }
   const[titleError,setTitleError] = useState(false)
   const checkForTitle =(e)=>{
@@ -27,7 +29,41 @@ function EditBoardMenu() {
   const addColumns = () => {
     columns.push({ "name": "", "tasks": []});
     setColumns([...columns]);
+    setSaveEdit(true)
   };
+
+  
+const isFirstRender = useRef(true)
+
+useEffect(() => {
+ 
+  if (!isFirstRender.current && saveEdit) { 
+    boardData.boards[globalState.boardActive].name = title
+    boardData.boards[globalState.boardActive].columns = columns
+    setSaveEdit(false)
+    console.log(boardData)
+  }
+}, [globalState.boardActive,title,columns,saveEdit])
+
+  useEffect(() => { 
+    setTitle(boardData.boards[globalState.boardActive].name)
+    setColumns(boardData.boards[globalState.boardActive].columns )
+    isFirstRender.current = false // toggle flag after first render/mounting
+  }, [globalState.boardActive])
+
+  
+  const saveChanges = () => {
+    if(titleError === false){
+      setTitle(title)
+      setColumns([...columns])
+      setSaveEdit(true)
+      globalState.setEditBoardMenu(false)
+    }else{
+      setTitleError(true)
+    }
+
+  };
+
   return (
     <div
       className={` mx-auto left-0 right-0 w-full h-full ${
@@ -36,7 +72,7 @@ function EditBoardMenu() {
     >
       <div
         className="absolute z-40  mx-auto left-0 right-0 bg-black opacity-50 w-full h-full "
-        onClick={() => globalState.closeEditTaskMenu()}
+        onClick={() => globalState.setEditBoardMenu(false)}
       ></div>
       <div
         className={`absolute top-[80px] mx-auto left-0 right-0 transition-all bg-[white] dark:bg-dark-gray min-w-[264px] max-w-[343px] min-h-[322px] z-40  p-[24px]  rounded-[6px] border-r border-light-lines dark:border-dark-lines `}
@@ -80,7 +116,7 @@ function EditBoardMenu() {
           Board Columns
         </div>
         <div className="mb-[24px]">
-          {columns.map((data, key) => {
+          {boardData.boards[globalState.boardActive].columns.map((data, key) => {
             return (
               <div key={key} className={`flex items-center text-[#828FA3] w-full mb-[12px] `}>
                     <div className="w-full">
@@ -91,6 +127,7 @@ function EditBoardMenu() {
                    onChange={e => {
                     columns[key].name = e.target.value;
                     setColumns([...columns]);
+                    setSaveEdit(true)
                   }} />
                     </div>
                     <div>
@@ -100,8 +137,7 @@ function EditBoardMenu() {
                 onClick={() => {
                     columns.splice(key,1);
                     setColumns([...columns]);
-                    console.log(columns)
-                    
+                    setSaveEdit(true)
                 }}
                         />
                     </div>
@@ -114,7 +150,7 @@ function EditBoardMenu() {
         + Add New Column
         </button>
 
-        <button className=" bg-purple w-full rounded-[20px] py-[8px] pb-[9px] px-[87px] text-white text-[13px]">
+        <button className=" bg-purple w-full rounded-[20px] py-[8px] pb-[9px] px-[87px] text-white text-[13px]" onClick={saveChanges}>
               Save Changes
         </button>
       </div>

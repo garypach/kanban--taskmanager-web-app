@@ -13,9 +13,9 @@ function EditTaskMenu() {
   const globalState = useContext(UserContext);
  
   const [title, setTitle] = useState(
-    boardData.boards[globalState.boardActive].columns[globalState.viewTaskFrom]
-      .tasks.length === 0
-      ? ""
+    boardData.boards[globalState.boardActive].columns.length === 0 || boardData.boards[globalState.boardActive].columns[
+      globalState.viewTaskFrom
+    ].tasks.length  === 0 ? ""
       : boardData.boards[globalState.boardActive].columns[
           globalState.viewTaskFrom
         ].tasks[globalState.viewTaskMenuActive].title
@@ -42,9 +42,9 @@ function EditTaskMenu() {
     ].tasks[globalState.viewTaskMenuActive].title = title;
   };
 
-  const [desc, setDesc] = useState( boardData.boards[globalState.boardActive].columns[globalState.viewTaskFrom]
-    .tasks.length === 0
-    ? ""
+  const [desc, setDesc] = useState( boardData.boards[globalState.boardActive].columns.length === 0 || boardData.boards[globalState.boardActive].columns[
+    globalState.viewTaskFrom
+  ].tasks.length  === 0 ? ""
     : boardData.boards[globalState.boardActive].columns[
         globalState.viewTaskFrom
       ].tasks[globalState.viewTaskMenuActive].description
@@ -58,9 +58,9 @@ function EditTaskMenu() {
     ].tasks[globalState.viewTaskMenuActive].description = desc;
   };
   const [subtasks, setSubTasks] = useState(
-    boardData.boards[globalState.boardActive].columns[globalState.viewTaskFrom]
-      .tasks.length === 0
-      ? []
+    boardData.boards[globalState.boardActive].columns.length === 0 || boardData.boards[globalState.boardActive].columns[
+      globalState.viewTaskFrom
+    ].tasks.length  === 0 ? []
       : boardData.boards[globalState.boardActive].columns[
           globalState.viewTaskFrom
         ].tasks[globalState.viewTaskMenuActive].subtasks

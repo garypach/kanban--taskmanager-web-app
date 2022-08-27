@@ -29,7 +29,7 @@ function Sidebar() {
 
   useEffect(() =>{
     if (!isFirstRender.current) { 
-    console.log(globalState.boardActive)
+      console.log(globalState.boardActive)
     }
   },[globalState])
 
