@@ -1,4 +1,4 @@
-import { useContext,useEffect,useRef,useState } from "react";
+import { useContext,useEffect,useRef,useState} from "react";
 import { UserContext } from "../Provider/Provider.js";
 import { boardData } from "../../data";
 import iconBoard from "../../assets/icon-board.svg";
@@ -31,7 +31,7 @@ function Sidebar() {
     if (!isFirstRender.current) { 
       console.log(globalState.boardActive)
     }
-  },[globalState])
+  },[globalState.boardActive])
 
   useEffect(() => { 
     isFirstRender.current = false // toggle flag after first render/mounting
@@ -43,7 +43,7 @@ function Sidebar() {
       ALL BOARDS {boardData.boards.length}
       </div>
       <div>
-        {boardData.boards.map((data, key) => {
+        {globalState.state.boards.map((data, key) => {
           return (
             <div
               key={key}

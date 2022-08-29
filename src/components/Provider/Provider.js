@@ -1,8 +1,10 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect,useReducer, } from "react";
+import { initialState, reducer } from "../../Reducer/Reducer.js";
 
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
     //mobileMenuActive
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
 
@@ -72,6 +74,8 @@ const UserProvider = ({ children }) => {
 
     return (
       <UserContext.Provider value={{
+           state, 
+           dispatch,
            boardActive,
            setBoardActive,
            useLightMode,

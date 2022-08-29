@@ -4,7 +4,6 @@ import Sidebar from './components/Sidebar/Sidebar';
 import { useContext } from "react";
 import { UserContext } from './components/Provider/Provider';
 import TasksColumn from './components/TasksColumn/TasksColumn';
-import {boardData} from './data'
 import ScrollContainer from 'react-indiana-drag-scroll'
 import MobileMenu from './components/MobileMenu/MobileMenu';
 import ViewTaskMenu from './components/ViewTaskMenu/ViewTaskMenu';
@@ -25,14 +24,16 @@ function App() {
       <AddNewBoardMenu/>
       <EditBoardMenu/>
       <DeleteBoardMenu/>
+      {/* 
+     
       <ViewTaskMenu/>
       <EditTaskMenu/>
       <DeleteTaskMenu/>
-      <AddTaskMenu/>
+      <AddTaskMenu/> */}
       <Sidebar/>
       <ShowSideBar/>
       <ScrollContainer className="scroll-container" horizontal={true} hideScrollbars={true} nativeMobileScroll={false}>
-      <TasksColumn columns={boardData.boards[globalState.boardActive].columns} />
+      <TasksColumn columns={globalState.state.boards[globalState.boardActive].columns} />
       </ScrollContainer>
       </div>
       

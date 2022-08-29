@@ -1,15 +1,14 @@
 import { useContext,useEffect,useRef,useState } from "react";
 import { UserContext } from "../Provider/Provider.js";
-import { boardData } from "../../data";
 import { XIcon } from "@heroicons/react/solid";
 
 function EditBoardMenu() {
   const globalState = useContext(UserContext);
   const [saveEdit,setSaveEdit] = useState(false)
-  const [title,setTitle] = useState(boardData.boards[globalState.boardActive].name)
+  const [title,setTitle] = useState(globalState.state.boards[globalState.boardActive].name)
+  
   const handleTitleInput = (e)=>{
     setTitle(e.target.value)
-    setSaveEdit(true)
   }
   const[titleError,setTitleError] = useState(false)
   const checkForTitle =(e)=>{
@@ -25,38 +24,29 @@ function EditBoardMenu() {
     setTitleError(false)    
   }
 
-  const[columns,setColumns] = useState(boardData.boards[globalState.boardActive].columns)
+  const[columns,setColumns] = useState(globalState.state.boards[globalState.boardActive].columns)
+
   const addColumns = () => {
     columns.push({ "name": "", "tasks": []});
     setColumns([...columns]);
-    setSaveEdit(true)
   };
 
   
 const isFirstRender = useRef(true)
 
-useEffect(() => {
- 
-  if (!isFirstRender.current && saveEdit) { 
-    boardData.boards[globalState.boardActive].name = title
-    boardData.boards[globalState.boardActive].columns = columns
-    setSaveEdit(false)
-    console.log(boardData)
-  }
-}, [globalState.boardActive,title,columns,saveEdit])
-
   useEffect(() => { 
-    setTitle(boardData.boards[globalState.boardActive].name)
-    setColumns(boardData.boards[globalState.boardActive].columns )
+    setSaveEdit(false)
+    if(globalState.editBoardMenu === false){
+      setTitle(globalState.state.boards[globalState.boardActive].name)
+      setColumns(globalState.state.boards[globalState.boardActive].columns)
+    }
     isFirstRender.current = false // toggle flag after first render/mounting
-  }, [globalState.boardActive])
-
+  }, [globalState,title,columns,saveEdit])
   
+  const dispatchBoard = (name,col) => globalState.dispatch({type: "editBoard", index:globalState.boardActive, name:name, columns:col})
   const saveChanges = () => {
     if(titleError === false){
-      setTitle(title)
-      setColumns([...columns])
-      setSaveEdit(true)
+      dispatchBoard(title,columns)
       globalState.setEditBoardMenu(false)
     }else{
       setTitleError(true)
@@ -116,7 +106,7 @@ useEffect(() => {
           Board Columns
         </div>
         <div className="mb-[24px]">
-          {boardData.boards[globalState.boardActive].columns.map((data, key) => {
+          {columns.map((data, key) => {
             return (
               <div key={key} className={`flex items-center text-[#828FA3] w-full mb-[12px] `}>
                     <div className="w-full">

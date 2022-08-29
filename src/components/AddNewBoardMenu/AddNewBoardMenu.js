@@ -1,10 +1,11 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "../Provider/Provider.js";
-import { boardData } from "../../data";
 import { XIcon } from "@heroicons/react/solid";
+
 
 function AddNewBoardMenu() {
   const globalState = useContext(UserContext);
+  const [createBoard,setCreateBoard] = useState(false);
   const [title, setTitle] = useState("");
   const handleTitleInput = (e) => {
     setTitle(e.target.value);
@@ -36,36 +37,28 @@ function AddNewBoardMenu() {
     setColumns([...columns]);
   };
 
-  const [newBoard, setNewBoard] = useState({ name: '', columns: []});
-
   const isFirstRender = useRef(true)
 
 useEffect(() => {
- 
-  if (!isFirstRender.current) { 
-    boardData.boards = [...boardData.boards, newBoard]
+  if (!isFirstRender.current && createBoard) { 
+    console.log(globalState.state)
+    setCreateBoard(false)
   }
-}, [newBoard])
-
-useEffect(() => {
- 
-  if (!isFirstRender.current) { 
-    
-  }
-}, [newBoard])
+}, [globalState.state,createBoard])
 
   useEffect(() => { 
     isFirstRender.current = false // toggle flag after first render/mounting
   }, [])
 
+  const dispatchBoard = (name,col) => globalState.dispatch({type: "addBoard", name:name, columns:col})
   const saveNewBoard = () => {
     if(checkForTitle() === true){
-      setNewBoard({name:title,columns:[...columns]})
+      dispatchBoard(title,columns)
+      setCreateBoard(true)
       globalState.setAddNewBoardMenu(false);
       if(globalState.addNewBoardMenu === false){
         setTitle('')
         setColumns([])
-        setNewBoard({ name: '', columns: []})
       }
     }else{
       setTitleError(true)

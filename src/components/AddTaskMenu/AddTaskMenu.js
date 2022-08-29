@@ -1,4 +1,4 @@
-import { useContext, Fragment,useState } from "react";
+import { useContext, Fragment,useState, useRef, useEffect } from "react";
 import { UserContext } from "../Provider/Provider.js";
 import { boardData } from "../../data";
 import { Menu, Transition } from "@headlessui/react";
@@ -10,20 +10,23 @@ function classNames(...classes) {
 
 function AddTaskMenu() {
   const globalState = useContext(UserContext);
+  const [createTask,setCreateTask] = useState(false)
   const [title,setTitle] = useState('')
   const handleTitleInput = (e)=>{
     setTitle(e.target.value)
   }
   const[titleError,setTitleError] = useState(false)
-  const checkForTitle =(e)=>{
-      function titleValid(text){
-          return /^[a-z ,.'-]+$/i.test(text)
-      }
-      if(titleValid(title)){
-      }else{
-        setTitleError(true)
-      }
-  }
+  const checkForTitle = (e) => {
+    function titleValid(text) {
+      return /^[a-z ,.'-]+$/i.test(text);
+    }
+    if (titleValid(title)) {
+      return true
+    } else {
+      setTitleError(true);
+      return false
+    }
+  };
   const removeTitleError =(e)=>{
     setTitleError(false)    
   }
@@ -38,6 +41,59 @@ function AddTaskMenu() {
     subtasks.push({ title: "",isCompleted: false });
     setSubTasks([...subtasks]);
   };
+
+    
+  const [taskStatus,setTaskStatus] = useState(boardData.boards[globalState.boardActive].columns.length === 0 ? "" : boardData.boards[globalState.boardActive].columns[0].name);
+  const [statusKey,setStatusKey] = useState(0);
+  const [newTask, setNewTask] = useState( {
+    "title": "",
+    "description": "",
+    "status": "",
+    "subtasks": []
+  });
+
+  const isFirstRender = useRef(true)
+
+useEffect(() => {
+ 
+  if (!isFirstRender.current  && createTask) { 
+    boardData.boards[globalState.boardActive].columns[statusKey].tasks = [...boardData.boards[globalState.boardActive].columns[statusKey].tasks, newTask]
+    setCreateTask(false)
+  }
+}, [newTask,globalState.boardActive,statusKey,createTask])
+
+
+  useEffect(() => { 
+    isFirstRender.current = false // toggle flag after first render/mounting
+  }, [])
+
+  const saveNewTask = () => {
+    if(checkForTitle() === true){
+
+      setNewTask({title:title,description:desc,taskStatus:taskStatus,subtasks:[...subtasks]})
+      for(let i=0; i < boardData.boards[globalState.boardActive].columns; i++){
+        if(boardData.boards[globalState.boardActive].columns[i].name === taskStatus){
+          setStatusKey(i);
+        }
+      }
+      setCreateTask(true)
+      globalState.setAddTaskMenu(false);
+      if(globalState.addTaskMenu === false){
+        setTitle('')
+        setDesc('')
+        setSubTasks([])
+        setNewTask({   
+          "title": "",
+        "description": "",
+        "status": "",
+        "subtasks": []})
+      }
+    }else{
+      setTitleError(true)
+    }
+
+  };
+
   return (
     <div
       className={` mx-auto left-0 right-0 w-full h-full ${
@@ -130,7 +186,7 @@ function AddTaskMenu() {
                 onClick={() => {
                     subtasks.splice(key,1);
                     setSubTasks([...subtasks]);
-                    console.log(subtasks)
+ 
                 }}
                         />
                     </div>
@@ -148,7 +204,7 @@ function AddTaskMenu() {
         <Menu as="div" className="relative inline-block text-left w-full mb-[24px]">
           <div>
             <Menu.Button className="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-dark-gray text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
-              Options
+              {taskStatus}
               <ChevronDownIcon
                 className="-mr-1 ml-2 h-5 w-5 text-purple"
                 aria-hidden="true"
@@ -167,7 +223,9 @@ function AddTaskMenu() {
           >
             <Menu.Items className="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg w-full bg-white dark:bg-dark-gray ring-1 dark:text-white ring-black ring-opacity-5 focus:outline-none">
               <div className="py-1">
-                <Menu.Item>
+              {boardData.boards[globalState.boardActive].columns.map((data,key)=>{
+                return(
+                  <Menu.Item key={key} onClick={()=> setTaskStatus(data.name)}>
                   {({ active }) => (
                     <span
                       href="/#"
@@ -176,58 +234,19 @@ function AddTaskMenu() {
                         "block px-4 py-2 text-sm"
                       )}
                     >
-                      Account settings
+                      {data.name}
                     </span>
                   )}
                 </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <span
-                      href="/#"
-                      className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        "block px-4 py-2 text-sm"
-                      )}
-                    >
-                      Support
-                    </span>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <span
-                      href="/#cl"
-                      className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        "block px-4 py-2 text-sm"
-                      )}
-                    >
-                      License
-                    </span>
-                  )}
-                </Menu.Item>
-                <form method="POST" action="#">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        type="submit"
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block w-full text-left px-4 py-2 text-sm"
-                        )}
-                      >
-                        Sign out
-                      </button>
-                    )}
-                  </Menu.Item>
-                </form>
+                )
+              })}
+          
               </div>
+           
             </Menu.Items>
           </Transition>
         </Menu>
-        <button className=" bg-purple w-full rounded-[20px] py-[8px] pb-[9px] px-[110px] text-white text-[13px]">
+        <button className=" bg-purple w-full rounded-[20px] py-[8px] pb-[9px] px-[110px] text-white text-[13px]" onClick={saveNewTask}>
               Create Task
         </button>
       </div>

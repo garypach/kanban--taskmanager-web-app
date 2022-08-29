@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { UserContext } from "../Provider/Provider.js";
-import { boardData } from "../../data";
 
 function DeleteBoardMenu() {
   const globalState = useContext(UserContext);
@@ -24,11 +23,11 @@ function DeleteBoardMenu() {
           </div>
           <div className="mb-[24px]  text-medium-gray text-[13px] font-bold leading-[23px]">
             Are you sure you want to delete the "
-            {boardData.boards[globalState.boardActive].name}" board? This action
+            {globalState.state.boards[globalState.boardActive].name}" board? This action
             will remove all columns and tasks and cannot be reversed.
           </div>
           <div className="flex flex-col w-full items-center md:flex-row ">
-            <button className="mb-[25px] md:mb-0 md:mr-[16px] bg-red w-full rounded-[20px] py-[8px] px-[126px] md:px-[78.5px] text-white">
+            <button className="mb-[25px] md:mb-0 md:mr-[16px] bg-red w-full rounded-[20px] py-[8px] px-[126px] md:px-[78.5px] text-white" onClick={() => {globalState.dispatch({type: "deleteBoard", index: globalState.boardActive}); globalState.setDeleteBoardMenu(false)}}>
               Delete
             </button>
             <button

@@ -8,7 +8,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { DotsVerticalIcon } from "@heroicons/react/solid";
 import arrowUp from "../../assets/icon-chevron-up.svg";
 import arrowDown from "../../assets/icon-chevron-down.svg";
-import { boardData } from "../../data";
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -36,7 +36,7 @@ function Header(props) {
           </div>
           <div className="hidden w-[1px] ml-[82.47px] mr-[24px] md:block md:min-h-[81px] lg:min-h-[96px] lg:ml-[113.47px]  dark:bg-dark-lines bg-light-lines"></div>
           <div className="hidden ml-[16px] md:ml-0 md:block">
-            {boardData.boards[globalState.boardActive].name}
+            {globalState.state.boards[globalState.boardActive].name}
           </div>
           <div
             className="block ml-[16px] md:hidden"
@@ -45,7 +45,7 @@ function Header(props) {
             }
           >
             <div className="flex items-center">
-              <div>{boardData.boards[globalState.boardActive].name}</div>
+              <div>{globalState.state.boards[globalState.boardActive].name}</div>
               <div className="ml-[8px]">
                 {globalState.mobileMenuActive ? (
                   <img className="" src={arrowUp} alt="arrowUp" />
