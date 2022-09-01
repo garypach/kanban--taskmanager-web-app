@@ -41,10 +41,9 @@ function AddNewBoardMenu() {
 
 useEffect(() => {
   if (!isFirstRender.current && createBoard) { 
-    console.log(globalState.state)
     setCreateBoard(false)
   }
-}, [globalState.state,createBoard])
+}, [createBoard])
 
   useEffect(() => { 
     isFirstRender.current = false // toggle flag after first render/mounting

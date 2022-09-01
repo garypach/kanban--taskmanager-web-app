@@ -1,10 +1,11 @@
-import React, { createContext, useState, useEffect,useReducer, } from "react";
+import React, { createContext, useState, useEffect} from "react";
 import { initialState, reducer } from "../../Reducer/Reducer.js";
+import { useImmerReducer } from "use-immer";
 
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useImmerReducer(reducer, initialState);
     //mobileMenuActive
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
 

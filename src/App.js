@@ -24,12 +24,12 @@ function App() {
       <AddNewBoardMenu/>
       <EditBoardMenu/>
       <DeleteBoardMenu/>
-      {/* 
-     
       <ViewTaskMenu/>
-      <EditTaskMenu/>
-      <DeleteTaskMenu/>
-      <AddTaskMenu/> */}
+      <AddTaskMenu/> 
+      {/* 
+       <EditTaskMenu/>
+       <DeleteTaskMenu/>
+      */}
       <Sidebar/>
       <ShowSideBar/>
       <ScrollContainer className="scroll-container" horizontal={true} hideScrollbars={true} nativeMobileScroll={false}>

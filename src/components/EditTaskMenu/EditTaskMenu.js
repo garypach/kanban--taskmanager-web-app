@@ -1,6 +1,5 @@
-import { useContext, Fragment, useState} from "react";
+import { useContext, Fragment, useState,useEffect,useRef} from "react";
 import { UserContext } from "../Provider/Provider.js";
-import { boardData } from "../../data";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, XIcon } from "@heroicons/react/solid";
 
@@ -11,12 +10,12 @@ function classNames(...classes) {
 function EditTaskMenu() {
   
   const globalState = useContext(UserContext);
- 
+  const [saveEdit,setSaveEdit] = useState(false)
   const [title, setTitle] = useState(
-    boardData.boards[globalState.boardActive].columns.length === 0 || boardData.boards[globalState.boardActive].columns[
+    globalState.state.boards[globalState.boardActive].columns.length === 0 || globalState.state.boards[globalState.boardActive].columns[
       globalState.viewTaskFrom
     ].tasks.length  === 0 ? ""
-      : boardData.boards[globalState.boardActive].columns[
+      : globalState.state.boards[globalState.boardActive].columns[
           globalState.viewTaskFrom
         ].tasks[globalState.viewTaskMenuActive].title
   );
@@ -36,32 +35,24 @@ function EditTaskMenu() {
   const editTitle = (e) => {
     const title = e.target.value;
     setTitle(title);
-
-    boardData.boards[globalState.boardActive].columns[
-      globalState.viewTaskFrom
-    ].tasks[globalState.viewTaskMenuActive].title = title;
   };
 
-  const [desc, setDesc] = useState( boardData.boards[globalState.boardActive].columns.length === 0 || boardData.boards[globalState.boardActive].columns[
+  const [desc, setDesc] = useState( globalState.state.boards[globalState.boardActive].columns.length === 0 || globalState.state.boards[globalState.boardActive].columns[
     globalState.viewTaskFrom
   ].tasks.length  === 0 ? ""
-    : boardData.boards[globalState.boardActive].columns[
+    : globalState.state.boards[globalState.boardActive].columns[
         globalState.viewTaskFrom
       ].tasks[globalState.viewTaskMenuActive].description
   );
   const editDesc = (e) => {
     const desc = e.target.value;
     setDesc(desc);
-
-    boardData.boards[globalState.boardActive].columns[
-      globalState.viewTaskFrom
-    ].tasks[globalState.viewTaskMenuActive].description = desc;
   };
   const [subtasks, setSubTasks] = useState(
-    boardData.boards[globalState.boardActive].columns.length === 0 || boardData.boards[globalState.boardActive].columns[
+    globalState.state.boards[globalState.boardActive].columns.length === 0 || globalState.state.boards[globalState.boardActive].columns[
       globalState.viewTaskFrom
     ].tasks.length  === 0 ? []
-      : boardData.boards[globalState.boardActive].columns[
+      : globalState.state.boards[globalState.boardActive].columns[
           globalState.viewTaskFrom
         ].tasks[globalState.viewTaskMenuActive].subtasks
   );
@@ -69,6 +60,59 @@ function EditTaskMenu() {
     subtasks.push({ title: "", isCompleted: false });
     setSubTasks([...subtasks]);
   };
+
+  const [taskStatus,setTaskStatus] = useState(globalState.state.boards[globalState.boardActive].columns.length === 0 || globalState.state.boards[globalState.boardActive].columns[
+    globalState.viewTaskFrom
+  ].tasks.length  === 0 ? []
+    : globalState.state.boards[globalState.boardActive].columns[
+        globalState.viewTaskFrom
+      ].tasks[globalState.viewTaskMenuActive].status)
+  const isFirstRender = useRef(true)
+
+  useEffect(() => { 
+    setSaveEdit(false)
+    if(globalState.editTaskMenu === false){
+      setTitle(
+        globalState.state.boards[globalState.boardActive].columns.length === 0 || globalState.state.boards[globalState.boardActive].columns[
+          globalState.viewTaskFrom
+        ].tasks.length  === 0 ? ""
+          : globalState.state.boards[globalState.boardActive].columns[
+              globalState.viewTaskFrom
+            ].tasks[globalState.viewTaskMenuActive].title)
+            setDesc(globalState.state.boards[globalState.boardActive].columns.length === 0 || globalState.state.boards[globalState.boardActive].columns[
+              globalState.viewTaskFrom
+            ].tasks.length  === 0 ? ""
+              : globalState.state.boards[globalState.boardActive].columns[
+                  globalState.viewTaskFrom
+                ].tasks[globalState.viewTaskMenuActive].description)
+      setSubTasks(   globalState.state.boards[globalState.boardActive].columns.length === 0 || globalState.state.boards[globalState.boardActive].columns[
+        globalState.viewTaskFrom
+      ].tasks.length  === 0 ? []
+        : globalState.state.boards[globalState.boardActive].columns[
+            globalState.viewTaskFrom
+          ].tasks[globalState.viewTaskMenuActive].subtasks)
+
+          setTaskStatus(globalState.state.boards[globalState.boardActive].columns.length === 0 || globalState.state.boards[globalState.boardActive].columns[
+            globalState.viewTaskFrom
+          ].tasks.length  === 0 ? []
+            : globalState.state.boards[globalState.boardActive].columns[
+                globalState.viewTaskFrom
+              ].tasks[globalState.viewTaskMenuActive].status)
+    }
+    isFirstRender.current = false // toggle flag after first render/mounting
+  }, [globalState,title,desc,subtasks,saveEdit])
+  
+  const dispatchTask= (title,desc,taskStatus,subtasks) => globalState.dispatch({type: "editTask", boardIndex:globalState.boardActive,columnsIndex:globalState.viewTaskFrom,taskActive:globalState.viewTaskMenuActive, title:title, description:desc, status:taskStatus, subtasks:subtasks})
+  const saveChanges = () => {
+    if(titleError === false){
+      dispatchTask(title,desc,taskStatus,subtasks)
+      globalState.setEditTaskMenu(false)
+    }else{
+      setTitleError(true)
+    }
+
+  };
+
 
   return (
     <div
@@ -192,7 +236,7 @@ function EditTaskMenu() {
         >
           <div>
             <Menu.Button className="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-dark-gray text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
-              Options
+              {taskStatus}
               <ChevronDownIcon
                 className="-mr-1 ml-2 h-5 w-5 text-purple"
                 aria-hidden="true"
@@ -211,67 +255,35 @@ function EditTaskMenu() {
           >
             <Menu.Items className="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg w-full bg-white dark:bg-dark-gray ring-1 dark:text-white ring-black ring-opacity-5 focus:outline-none">
               <div className="py-1">
-                <Menu.Item>
-                  {({ active }) => (
-                    <span
-                      href="/#"
-                      className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        "block px-4 py-2 text-sm"
-                      )}
-                    >
-                      Account settings
-                    </span>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <span
-                      href="/#"
-                      className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        "block px-4 py-2 text-sm"
-                      )}
-                    >
-                      Support
-                    </span>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <span
-                      href="/#cl"
-                      className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        "block px-4 py-2 text-sm"
-                      )}
-                    >
-                      License
-                    </span>
-                  )}
-                </Menu.Item>
-                <form method="POST" action="#">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        type="submit"
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block w-full text-left px-4 py-2 text-sm"
-                        )}
-                      >
-                        Sign out
-                      </button>
-                    )}
-                  </Menu.Item>
-                </form>
+                {
+                  
+    globalState.state.boards[globalState.boardActive].columns.length === 0 || globalState.state.boards[globalState.boardActive].columns[
+      globalState.viewTaskFrom
+    ].tasks.length  === 0 ? ""
+      : globalState.state.boards[globalState.boardActive].columns.map((data,key)=>{
+          return(
+            <Menu.Item key={key} onClick={()=>setTaskStatus(data.name)}>
+            {({ active }) => (
+              <span
+                href="/#"
+                className={classNames(
+                  active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                  "block px-4 py-2 text-sm"
+                )}
+              >
+                {data.name}
+              </span>
+            )}
+          </Menu.Item>
+          )
+        })
+                }
+              
               </div>
             </Menu.Items>
           </Transition>
         </Menu>
-        <button className=" bg-purple w-full rounded-[20px] py-[8px] pb-[9px] px-[87px] text-white text-[13px]">
+        <button className=" bg-purple w-full rounded-[20px] py-[8px] pb-[9px] px-[87px] text-white text-[13px]" onClick={saveChanges}>
           Save Changes
         </button>
       </div>

@@ -1,6 +1,5 @@
-import { useContext, Fragment } from "react";
+import { useContext, Fragment, useState, useEffect, useRef } from "react";
 import { UserContext } from "../Provider/Provider.js";
-import { boardData } from "../../data";
 import Checkbox from "react-custom-checkbox";
 import IconCheck from "../../assets/icon-check.svg";
 import { Menu, Transition } from "@headlessui/react";
@@ -22,7 +21,121 @@ function ViewTaskMenu() {
   const handleDeleteTaskMenu = () => {
     globalState.setViewTaskMenu(false);
     globalState.setDeleteTaskMenu(true);
- 
+  };
+
+  const [saveEdit, setSaveEdit] = useState(false);
+  const [title, setTitle] = useState(
+    globalState.state.boards[globalState.boardActive].columns.length === 0 ||
+      globalState.state.boards[globalState.boardActive].columns[
+        globalState.viewTaskFrom
+      ].tasks.length === 0
+      ? ""
+      : globalState.state.boards[globalState.boardActive].columns[
+          globalState.viewTaskFrom
+        ].tasks[globalState.viewTaskMenuActive].title
+  );
+
+  const [desc, setDesc] = useState(
+    globalState.state.boards[globalState.boardActive].columns.length === 0 ||
+      globalState.state.boards[globalState.boardActive].columns[
+        globalState.viewTaskFrom
+      ].tasks.length === 0
+      ? ""
+      : globalState.state.boards[globalState.boardActive].columns[
+          globalState.viewTaskFrom
+        ].tasks[globalState.viewTaskMenuActive].description
+  );
+
+  const [subtasks, setSubTasks] = useState(
+    globalState.state.boards[globalState.boardActive].columns.length === 0 ||
+      globalState.state.boards[globalState.boardActive].columns[
+        globalState.viewTaskFrom
+      ].tasks.length === 0
+      ? []
+      : globalState.state.boards[globalState.boardActive].columns[
+          globalState.viewTaskFrom
+        ].tasks[globalState.viewTaskMenuActive].subtasks
+  );
+
+  const [taskStatus, setTaskStatus] = useState(
+    globalState.state.boards[globalState.boardActive].columns.length === 0 ||
+      globalState.state.boards[globalState.boardActive].columns[
+        globalState.viewTaskFrom
+      ].tasks.length === 0
+      ? []
+      : globalState.state.boards[globalState.boardActive].columns[
+          globalState.viewTaskFrom
+        ].tasks[globalState.viewTaskMenuActive].status
+  );
+
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (!isFirstRender.current) {
+  
+    }
+  }, []);
+
+  useEffect(() => {
+    setTitle(
+      globalState.state.boards[globalState.boardActive].columns.length ===
+        0 ||
+        globalState.state.boards[globalState.boardActive].columns[
+          globalState.viewTaskFrom
+        ].tasks.length === 0
+        ? ""
+        : globalState.state.boards[globalState.boardActive].columns[
+            globalState.viewTaskFrom
+          ].tasks[globalState.viewTaskMenuActive].title
+    );
+    setDesc(
+      globalState.state.boards[globalState.boardActive].columns.length ===
+        0 ||
+        globalState.state.boards[globalState.boardActive].columns[
+          globalState.viewTaskFrom
+        ].tasks.length === 0
+        ? ""
+        : globalState.state.boards[globalState.boardActive].columns[
+            globalState.viewTaskFrom
+          ].tasks[globalState.viewTaskMenuActive].description
+    );
+    setSubTasks(
+      globalState.state.boards[globalState.boardActive].columns.length ===
+        0 ||
+        globalState.state.boards[globalState.boardActive].columns[
+          globalState.viewTaskFrom
+        ].tasks.length === 0
+        ? []
+        : globalState.state.boards[globalState.boardActive].columns[
+            globalState.viewTaskFrom
+          ].tasks[globalState.viewTaskMenuActive].subtasks
+    );
+
+    setTaskStatus(
+      globalState.state.boards[globalState.boardActive].columns.length ===
+        0 ||
+        globalState.state.boards[globalState.boardActive].columns[
+          globalState.viewTaskFrom
+        ].tasks.length === 0
+        ? []
+        : globalState.state.boards[globalState.boardActive].columns[
+            globalState.viewTaskFrom
+          ].tasks[globalState.viewTaskMenuActive].status
+    );
+    isFirstRender.current = false; // toggle flag after first render/mounting
+  }, [globalState, title, desc, subtasks, saveEdit]);
+
+  const dispatchTask = (title, desc, taskStatus, subtasks) => {
+    globalState.dispatch({
+      type: "editTask",
+      boardIndex: globalState.boardActive,
+      columnsIndex: globalState.viewTaskFrom,
+      taskActive: globalState.viewTaskMenuActive,
+      title: title,
+      description: desc,
+      status: taskStatus,
+      subtasks: subtasks,
+    });
+    setSaveEdit(true);
   };
 
   return (
@@ -41,13 +154,15 @@ function ViewTaskMenu() {
         <div className="mb-[24px] flex items-center">
           <div className="flex items-center">
             <div className=" dark:text-white text-[18px] font-bold leading-[23px]">
-              {
-             boardData.boards[globalState.boardActive].columns.length === 0 || boardData.boards[globalState.boardActive].columns[
-              globalState.viewTaskFrom
-            ].tasks.length  === 0 ? '' :   boardData.boards[globalState.boardActive].columns[
-                  globalState.viewTaskFrom
-                ].tasks[globalState.viewTaskMenuActive].title
-              }
+              {globalState.state.boards[globalState.boardActive].columns
+                .length === 0 ||
+              globalState.state.boards[globalState.boardActive].columns[
+                globalState.viewTaskFrom
+              ].tasks.length === 0
+                ? ""
+                : globalState.state.boards[globalState.boardActive].columns[
+                    globalState.viewTaskFrom
+                  ].tasks[globalState.viewTaskMenuActive].title}
             </div>
             <Menu as="div" className="absoulte ml-[24px]">
               <div>
@@ -101,97 +216,111 @@ function ViewTaskMenu() {
         </div>
 
         <div className="mb-[24px] text-medium-gray text-[13px] leading-[23px]">
-          {
-           boardData.boards[globalState.boardActive].columns.length === 0  || boardData.boards[globalState.boardActive].columns[
+          {globalState.state.boards[globalState.boardActive].columns.length ===
+            0 ||
+          globalState.state.boards[globalState.boardActive].columns[
             globalState.viewTaskFrom
-          ].tasks.length  === 0 ? '' :   boardData.boards[globalState.boardActive].columns[
-              globalState.viewTaskFrom
-            ].tasks[globalState.viewTaskMenuActive].description
-          }
+          ].tasks.length === 0
+            ? ""
+            : globalState.state.boards[globalState.boardActive].columns[
+                globalState.viewTaskFrom
+              ].tasks[globalState.viewTaskMenuActive].description}
         </div>
         <div className="mb-[16px] text-white text-[12px] leading-[15px]">
           Subtasks
         </div>
         <div className="mb-[24px]">
-          {   boardData.boards[globalState.boardActive].columns.length === 0 || boardData.boards[globalState.boardActive].columns[
-              globalState.viewTaskFrom
-            ].tasks.length === 0 ?  '' :   boardData.boards[globalState.boardActive].columns[
-              globalState.viewTaskFrom
-            ].tasks[globalState.viewTaskMenuActive].subtasks.map((data, key) => {
-            return (
-              <div key={key} className={`flex items-center text-[#828FA3] `}>
-                {data.isCompleted === true ? (
-                  <div className="flex items-center bg-light-bg  dark:bg-dark-bg mb-[8px] pl-[12px] pt-[13px] pr-[8px] pb-[16px] rounded-[4px]">
-                    <Checkbox
-                      icon={
-                        <img
-                          className="text-white bg-purple w-[16px] h-[16px] rounded-[2px]"
-                          src={IconCheck}
-                          alt="IconCheck"
-                        />
-                      }
-                      name="Subtasks"
-                      checked={true}
-                      // onChange={(value, event) => {
-                      //   let p = {
-                      //     isTrue: value,
-                      //   };
-                      // }}
-                      borderColor="#FFFFFF"
-                      style={{
-                        cursor: "pointer",
-                        color: "#FFFFFF",
-                        background: "#FFFFFF",
-                        borderWidth: "0px",
-                        borderRadius: "2px",
-                      }}
-                    />
-                    <div className="text-black dark:text-white ml-[16px] leading-[15px] text-[12px] font-bold line-through opacity-50">
-                      {data.title}
+          {globalState.state.boards[globalState.boardActive].columns.length ===
+            0 ||
+          globalState.state.boards[globalState.boardActive].columns[
+            globalState.viewTaskFrom
+          ].tasks.length === 0
+            ? ""
+            : globalState.state.boards[globalState.boardActive].columns[
+                globalState.viewTaskFrom
+              ].tasks[globalState.viewTaskMenuActive].subtasks.map(
+                (data, key) => {
+                  return (
+                    <div
+                      key={key}
+                      className={`flex items-center text-[#828FA3] `}
+                    >
+                      {data.isCompleted === true ? (
+                        <div className="flex items-center bg-light-bg  dark:bg-dark-bg mb-[8px] pl-[12px] pt-[13px] pr-[8px] pb-[16px] rounded-[4px]">
+                          <Checkbox
+                            icon={
+                              <img
+                                className="text-white bg-purple w-[16px] h-[16px] rounded-[2px]"
+                                src={IconCheck}
+                                alt="IconCheck"
+                              />
+                            }
+                            name="Subtasks"
+                            checked={true}
+                            // onChange={(value, event) => {
+                            //   let p = {
+                            //     isTrue: value,
+                            //   };
+                            // }}
+                            borderColor="#FFFFFF"
+                            style={{
+                              cursor: "pointer",
+                              color: "#FFFFFF",
+                              background: "#FFFFFF",
+                              borderWidth: "0px",
+                              borderRadius: "2px",
+                            }}
+                          />
+                          <div className="text-black dark:text-white ml-[16px] leading-[15px] text-[12px] font-bold line-through opacity-50">
+                            {data.title}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center bg-light-bg  dark:bg-dark-bg mb-[8px] pl-[12px] pt-[13px] pr-[8px] pb-[16px] rounded-[4px]">
+                          <Checkbox
+                            icon={
+                              <img
+                                className="text-white bg-purple w-[16px] h-[16px] rounded-[2px]"
+                                src={IconCheck}
+                                alt="IconCheck"
+                              />
+                            }
+                            name="Subtasks"
+                            checked={true}
+                            // onChange={(value, event) => {
+                            //   let p = {
+                            //     isTrue: value,
+                            //   };
+                            // }}
+                            borderColor="#FFFFFF"
+                            style={{
+                              cursor: "pointer",
+                              color: "#FFFFFF",
+                              background: "#FFFFFF",
+                              borderWidth: "0px",
+                              borderRadius: "2px",
+                            }}
+                          />
+                          <div className="text-black dark:text-white ml-[16px] leading-[15px] text-[12px] font-bold">
+                            {data.title}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ) : (
-                  <div className="flex items-center bg-light-bg  dark:bg-dark-bg mb-[8px] pl-[12px] pt-[13px] pr-[8px] pb-[16px] rounded-[4px]">
-                    <Checkbox
-                      icon={
-                        <img
-                          className="text-white bg-purple w-[16px] h-[16px] rounded-[2px]"
-                          src={IconCheck}
-                          alt="IconCheck"
-                        />
-                      }
-                      name="Subtasks"
-                      checked={true}
-                      // onChange={(value, event) => {
-                      //   let p = {
-                      //     isTrue: value,
-                      //   };
-                      // }}
-                      borderColor="#FFFFFF"
-                      style={{
-                        cursor: "pointer",
-                        color: "#FFFFFF",
-                        background: "#FFFFFF",
-                        borderWidth: "0px",
-                        borderRadius: "2px",
-                      }}
-                    />
-                    <div className="text-black dark:text-white ml-[16px] leading-[15px] text-[12px] font-bold">
-                      {data.title}
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                  );
+                }
+              )}
         </div>
-        <div className="mb-[8px] text-white dark:text-medium-gray text-[12px] font-bold leading-[15px] ">
+        <div className="mb-[8px] dark:text-white text-medium-gray text-[12px] font-bold leading-[15px] ">
           Current Status
         </div>
-        <Menu as="div" className="relative inline-block text-left w-full">
+        <Menu
+          as="div"
+          className="relative inline-block text-left w-full mb-[24px]"
+        >
           <div>
             <Menu.Button className="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-dark-gray text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
-              Options
+              {taskStatus}
               <ChevronDownIcon
                 className="-mr-1 ml-2 h-5 w-5 text-purple"
                 aria-hidden="true"
@@ -210,62 +339,38 @@ function ViewTaskMenu() {
           >
             <Menu.Items className="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg w-full bg-white dark:bg-dark-gray ring-1 dark:text-white ring-black ring-opacity-5 focus:outline-none">
               <div className="py-1">
-                <Menu.Item>
-                  {({ active }) => (
-                    <span
-                      href="/#"
-                      className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        "block px-4 py-2 text-sm"
-                      )}
-                    >
-                      Account settings
-                    </span>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <span
-                      href="/#"
-                      className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        "block px-4 py-2 text-sm"
-                      )}
-                    >
-                      Support
-                    </span>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <span
-                      href="/#cl"
-                      className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        "block px-4 py-2 text-sm"
-                      )}
-                    >
-                      License
-                    </span>
-                  )}
-                </Menu.Item>
-                <form method="POST" action="#">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        type="submit"
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block w-full text-left px-4 py-2 text-sm"
-                        )}
-                      >
-                        Sign out
-                      </button>
-                    )}
-                  </Menu.Item>
-                </form>
+                {globalState.state.boards[globalState.boardActive].columns
+                  .length === 0 ||
+                globalState.state.boards[globalState.boardActive].columns[
+                  globalState.viewTaskFrom
+                ].tasks.length === 0
+                  ? ""
+                  : globalState.state.boards[
+                      globalState.boardActive
+                    ].columns.map((data, key) => {
+                      return (
+                        <Menu.Item
+                          key={key}
+                          onClick={() =>
+                            dispatchTask(title, desc, data.name, subtasks)
+                          }
+                        >
+                          {({ active }) => (
+                            <span
+                              href="/#"
+                              className={classNames(
+                                active
+                                  ? "bg-gray-100 text-gray-900"
+                                  : "text-gray-700",
+                                "block px-4 py-2 text-sm"
+                              )}
+                            >
+                              {data.name}
+                            </span>
+                          )}
+                        </Menu.Item>
+                      );
+                    })}
               </div>
             </Menu.Items>
           </Transition>

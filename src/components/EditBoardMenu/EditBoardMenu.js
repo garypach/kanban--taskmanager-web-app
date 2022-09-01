@@ -34,14 +34,20 @@ function EditBoardMenu() {
   
 const isFirstRender = useRef(true)
 
-  useEffect(() => { 
+useEffect(() => {
+ 
+  if (!isFirstRender.current && saveEdit) { 
+    setTitle(globalState.state.boards[globalState.boardActive].name)
+    setColumns(globalState.state.boards[globalState.boardActive].columns)
     setSaveEdit(false)
-    if(globalState.editBoardMenu === false){
-      setTitle(globalState.state.boards[globalState.boardActive].name)
-      setColumns(globalState.state.boards[globalState.boardActive].columns)
-    }
+  }
+}, [globalState,title,columns,saveEdit])
+
+
+
+  useEffect(() => { 
     isFirstRender.current = false // toggle flag after first render/mounting
-  }, [globalState,title,columns,saveEdit])
+  }, [])
   
   const dispatchBoard = (name,col) => globalState.dispatch({type: "editBoard", index:globalState.boardActive, name:name, columns:col})
   const saveChanges = () => {

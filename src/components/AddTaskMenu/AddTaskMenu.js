@@ -36,58 +36,39 @@ function AddTaskMenu() {
     setDesc(e.target.value)
   }
 
-  const[subtasks,setSubTasks] = useState([""])
+  const[subtasks,setSubTasks] = useState([])
   const addSubtask = () => {
     subtasks.push({ title: "",isCompleted: false });
     setSubTasks([...subtasks]);
   };
 
     
-  const [taskStatus,setTaskStatus] = useState(boardData.boards[globalState.boardActive].columns.length === 0 ? "" : boardData.boards[globalState.boardActive].columns[0].name);
-  const [statusKey,setStatusKey] = useState(0);
-  const [newTask, setNewTask] = useState( {
-    "title": "",
-    "description": "",
-    "status": "",
-    "subtasks": []
-  });
-
+  const [taskStatus,setTaskStatus] = useState( globalState.state.boards[globalState.boardActive].columns.length === 0 ? "" : boardData.boards[globalState.boardActive].columns[0].name);
+ 
   const isFirstRender = useRef(true)
 
 useEffect(() => {
  
-  if (!isFirstRender.current  && createTask) { 
-    boardData.boards[globalState.boardActive].columns[statusKey].tasks = [...boardData.boards[globalState.boardActive].columns[statusKey].tasks, newTask]
+  if (!isFirstRender.current && createTask) {
+    setTitle('')
+    setDesc('')
+    setSubTasks([])
     setCreateTask(false)
   }
-}, [newTask,globalState.boardActive,statusKey,createTask])
+}, [createTask])
 
 
   useEffect(() => { 
     isFirstRender.current = false // toggle flag after first render/mounting
   }, [])
 
+  const dispatchTask = (title,desc,taskStatus,subtasks) => globalState.dispatch({type: "addTask", boardIndex:globalState.boardActive, title:title, description:desc, status:taskStatus, subtasks:subtasks})
+
   const saveNewTask = () => {
     if(checkForTitle() === true){
-
-      setNewTask({title:title,description:desc,taskStatus:taskStatus,subtasks:[...subtasks]})
-      for(let i=0; i < boardData.boards[globalState.boardActive].columns; i++){
-        if(boardData.boards[globalState.boardActive].columns[i].name === taskStatus){
-          setStatusKey(i);
-        }
-      }
       setCreateTask(true)
+      dispatchTask(title,desc,taskStatus,subtasks)
       globalState.setAddTaskMenu(false);
-      if(globalState.addTaskMenu === false){
-        setTitle('')
-        setDesc('')
-        setSubTasks([])
-        setNewTask({   
-          "title": "",
-        "description": "",
-        "status": "",
-        "subtasks": []})
-      }
     }else{
       setTitleError(true)
     }
@@ -172,7 +153,7 @@ useEffect(() => {
                     <div className="w-full">
                           <input type="text" className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                     focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
-                   " value={data} 
+                   " value={data.title} 
                    placeholder="e.g. Make coffee"
                    onChange={e => {
                     subtasks[key].title = e.target.value;
