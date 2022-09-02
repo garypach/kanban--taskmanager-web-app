@@ -70,6 +70,13 @@ export const reducer = (state, action) => {
                 console.log(current(state.boards))
                 break
               }
+              case "deleteTask":
+                {
+                  const taskIndex = action.taskActive;
+                  state.boards[action.boardIndex].columns[action.columnsIndex].tasks.splice(taskIndex, 1);
+                  console.log(current(state.boards))
+                  break
+                }
             case "editTask":
               {
               
@@ -101,6 +108,15 @@ export const reducer = (state, action) => {
                     }
                   }
                 }
+                break
+              }
+
+              case "checkMarkTask":
+              {
+                const taskIndex = action.taskActive;
+                const subtaskIndex = action.subtaskIndex
+                state.boards[action.boardIndex].columns[action.columnsIndex].tasks[taskIndex].subtasks[subtaskIndex].isCompleted = !state.boards[action.boardIndex].columns[action.columnsIndex].tasks[taskIndex].subtasks[subtaskIndex].isCompleted
+                console.log(current(state.boards))
                 break
               }
         default:

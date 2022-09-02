@@ -1,10 +1,16 @@
-import { useContext } from "react";
 import { UserContext } from "../Provider/Provider.js";
-import { boardData } from "../../data";
-
+import { useContext, useState, useEffect, useRef } from "react";
 function DeleteTaskMenu() {
   const globalState = useContext(UserContext);
-
+  const dispatchDeleteTask = () =>{
+    globalState.dispatch({
+      type: "deleteTask",
+      boardIndex: globalState.boardActive,
+      columnsIndex: globalState.viewTaskFrom,
+      taskActive: globalState.viewTaskMenuActive,
+    });
+    globalState.setDeleteTaskMenu(false)
+  };
   return (
     <div
       className={` mx-auto left-0 right-0 w-full h-full ${
@@ -24,19 +30,18 @@ function DeleteTaskMenu() {
           </div>
           <div className="mb-[24px]  text-medium-gray text-[13px] font-bold leading-[23px]">
             Are you sure you want to delete the "
-            {
-             
-             boardData.boards[globalState.boardActive].columns.length === 0 || boardData.boards[globalState.boardActive].columns[
-              globalState.viewTaskFrom
-            ].tasks.length  === 0 ? '' :   boardData.boards[globalState.boardActive].columns[
-              globalState.viewTaskFrom
-            ].tasks[globalState.viewTaskMenuActive].title
-              
-            }
+            { globalState.state.boards[globalState.boardActive].columns.length === 0 ||
+      globalState.state.boards[globalState.boardActive].columns[
+        globalState.viewTaskFrom
+      ].tasks.length === 0
+      ? ""
+      : globalState.state.boards[globalState.boardActive].columns[
+          globalState.viewTaskFrom
+        ].tasks[globalState.viewTaskMenuActive].title}
             " task and its subtasks? This action cannot be reversed.
           </div>
           <div className="flex flex-col w-full items-center md:flex-row ">
-            <button className="mb-[25px] md:mb-0 md:mr-[16px] bg-red w-full rounded-[20px] py-[8px] px-[126px] md:px-[78.5px] text-white">
+            <button className="mb-[25px] md:mb-0 md:mr-[16px] bg-red w-full rounded-[20px] py-[8px] px-[126px] md:px-[78.5px] text-white" onClick={() => dispatchDeleteTask()}>
               Delete
             </button>
             <button

@@ -26,9 +26,9 @@ function App() {
       <DeleteBoardMenu/>
       <ViewTaskMenu/>
       <AddTaskMenu/> 
+      <DeleteTaskMenu/>
       {/* 
        <EditTaskMenu/>
-       <DeleteTaskMenu/>
       */}
       <Sidebar/>
       <ShowSideBar/>

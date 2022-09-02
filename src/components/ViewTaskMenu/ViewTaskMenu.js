@@ -138,6 +138,16 @@ function ViewTaskMenu() {
     setSaveEdit(true);
   };
 
+  const dispatchTaskCheckMark = (subtaskIndex) =>{
+      globalState.dispatch({
+        type: "checkMarkTask",
+        boardIndex: globalState.boardActive,
+        columnsIndex: globalState.viewTaskFrom,
+        taskActive: globalState.viewTaskMenuActive,
+        subtaskIndex:subtaskIndex
+      });
+      setSaveEdit(true);
+    };
   return (
     <div
       className={` mx-auto left-0 right-0 w-full h-full ${
@@ -154,15 +164,7 @@ function ViewTaskMenu() {
         <div className="mb-[24px] flex items-center">
           <div className="flex items-center">
             <div className=" dark:text-white text-[18px] font-bold leading-[23px]">
-              {globalState.state.boards[globalState.boardActive].columns
-                .length === 0 ||
-              globalState.state.boards[globalState.boardActive].columns[
-                globalState.viewTaskFrom
-              ].tasks.length === 0
-                ? ""
-                : globalState.state.boards[globalState.boardActive].columns[
-                    globalState.viewTaskFrom
-                  ].tasks[globalState.viewTaskMenuActive].title}
+              {title}
             </div>
             <Menu as="div" className="absoulte ml-[24px]">
               <div>
@@ -180,7 +182,7 @@ function ViewTaskMenu() {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="origin-top-right absolute right-[-65px] mt-2 rounded-md z-30 shadow-lg w-[192px] bg-white dark:bg-dark-gray ring-1 dark:text-white ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="origin-top-right absolute right-[-65px] mt-2 rounded-md z-50 shadow-lg w-[192px] bg-white dark:bg-dark-gray ring-1 dark:text-white ring-black ring-opacity-5 focus:outline-none">
                   <div className="py-1">
                     <Menu.Item onClick={() => handleEditTaskMenu()}>
                       {({ active }) => (
@@ -190,7 +192,7 @@ function ViewTaskMenu() {
                               ? "bg-gray-100 text-gray-900"
                               : "text-gray-700",
                             "block px-4 py-2 text-sm hover:cursor-pointer"
-                          )}
+                          )} 
                         >
                           Edit
                         </span>
@@ -257,11 +259,7 @@ function ViewTaskMenu() {
                             }
                             name="Subtasks"
                             checked={true}
-                            // onChange={(value, event) => {
-                            //   let p = {
-                            //     isTrue: value,
-                            //   };
-                            // }}
+                            onChange={()=>dispatchTaskCheckMark(key)}
                             borderColor="#FFFFFF"
                             style={{
                               cursor: "pointer",
@@ -286,12 +284,8 @@ function ViewTaskMenu() {
                               />
                             }
                             name="Subtasks"
-                            checked={true}
-                            // onChange={(value, event) => {
-                            //   let p = {
-                            //     isTrue: value,
-                            //   };
-                            // }}
+                            checked={false}
+                            onChange={()=>dispatchTaskCheckMark(key)}
                             borderColor="#FFFFFF"
                             style={{
                               cursor: "pointer",
