@@ -27,7 +27,7 @@ function DeleteBoardMenu() {
             will remove all columns and tasks and cannot be reversed.
           </div>
           <div className="flex flex-col w-full items-center md:flex-row ">
-            <button className="mb-[25px] md:mb-0 md:mr-[16px] bg-red w-full rounded-[20px] py-[8px] px-[126px] md:px-[78.5px] text-white" onClick={() => {globalState.dispatch({type: "deleteBoard", index: globalState.boardActive}); globalState.setDeleteBoardMenu(false)}}>
+            <button className="mb-[25px] md:mb-0 md:mr-[16px] bg-red w-full rounded-[20px] py-[8px] px-[126px] md:px-[78.5px] text-white" onClick={() => {globalState.dispatch({type: "deleteBoard", index: globalState.boardActive}); globalState.setBoardActive(globalState.boardActive-1); globalState.setDeleteBoardMenu(false)}}>
               Delete
             </button>
             <button

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect} from "react";
+import React, { createContext, useState, useEffect,useRef} from "react";
 import { initialState, reducer } from "../../Reducer/Reducer.js";
 import { useImmerReducer } from "use-immer";
 
@@ -33,6 +33,17 @@ const UserProvider = ({ children }) => {
 
     //current board
     const [boardActive, setBoardActive] = useState(0);
+    const isFirstRender = useRef(true)
+    
+    useEffect(() =>{
+        if (!isFirstRender.current) { 
+          console.log(boardActive)
+        }
+      },[boardActive])
+
+      useEffect(() => { 
+        isFirstRender.current = false // toggle flag after first render/mounting
+      }, [])
 
     //AddTaskMenu
     const [addTaskMenu, setAddTaskMenu] = useState(false);

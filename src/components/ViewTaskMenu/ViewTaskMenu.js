@@ -1,4 +1,4 @@
-import { useContext, Fragment, useState, useEffect, useRef } from "react";
+import { useContext, Fragment } from "react";
 import { UserContext } from "../Provider/Provider.js";
 import Checkbox from "react-custom-checkbox";
 import IconCheck from "../../assets/icon-check.svg";
@@ -23,107 +23,6 @@ function ViewTaskMenu() {
     globalState.setDeleteTaskMenu(true);
   };
 
-  const [saveEdit, setSaveEdit] = useState(false);
-  const [title, setTitle] = useState(
-    globalState.state.boards[globalState.boardActive].columns.length === 0 ||
-      globalState.state.boards[globalState.boardActive].columns[
-        globalState.viewTaskFrom
-      ].tasks.length === 0
-      ? ""
-      : globalState.state.boards[globalState.boardActive].columns[
-          globalState.viewTaskFrom
-        ].tasks[globalState.viewTaskMenuActive].title
-  );
-
-  const [desc, setDesc] = useState(
-    globalState.state.boards[globalState.boardActive].columns.length === 0 ||
-      globalState.state.boards[globalState.boardActive].columns[
-        globalState.viewTaskFrom
-      ].tasks.length === 0
-      ? ""
-      : globalState.state.boards[globalState.boardActive].columns[
-          globalState.viewTaskFrom
-        ].tasks[globalState.viewTaskMenuActive].description
-  );
-
-  const [subtasks, setSubTasks] = useState(
-    globalState.state.boards[globalState.boardActive].columns.length === 0 ||
-      globalState.state.boards[globalState.boardActive].columns[
-        globalState.viewTaskFrom
-      ].tasks.length === 0
-      ? []
-      : globalState.state.boards[globalState.boardActive].columns[
-          globalState.viewTaskFrom
-        ].tasks[globalState.viewTaskMenuActive].subtasks
-  );
-
-  const [taskStatus, setTaskStatus] = useState(
-    globalState.state.boards[globalState.boardActive].columns.length === 0 ||
-      globalState.state.boards[globalState.boardActive].columns[
-        globalState.viewTaskFrom
-      ].tasks.length === 0
-      ? []
-      : globalState.state.boards[globalState.boardActive].columns[
-          globalState.viewTaskFrom
-        ].tasks[globalState.viewTaskMenuActive].status
-  );
-
-  const isFirstRender = useRef(true);
-  useEffect(() => {
-    if (!isFirstRender.current) {
-  
-    }
-  }, []);
-
-  useEffect(() => {
-    setTitle(
-      globalState.state.boards[globalState.boardActive].columns.length ===
-        0 ||
-        globalState.state.boards[globalState.boardActive].columns[
-          globalState.viewTaskFrom
-        ].tasks.length === 0
-        ? ""
-        : globalState.state.boards[globalState.boardActive].columns[
-            globalState.viewTaskFrom
-          ].tasks[globalState.viewTaskMenuActive].title
-    );
-    setDesc(
-      globalState.state.boards[globalState.boardActive].columns.length ===
-        0 ||
-        globalState.state.boards[globalState.boardActive].columns[
-          globalState.viewTaskFrom
-        ].tasks.length === 0
-        ? ""
-        : globalState.state.boards[globalState.boardActive].columns[
-            globalState.viewTaskFrom
-          ].tasks[globalState.viewTaskMenuActive].description
-    );
-    setSubTasks(
-      globalState.state.boards[globalState.boardActive].columns.length ===
-        0 ||
-        globalState.state.boards[globalState.boardActive].columns[
-          globalState.viewTaskFrom
-        ].tasks.length === 0
-        ? []
-        : globalState.state.boards[globalState.boardActive].columns[
-            globalState.viewTaskFrom
-          ].tasks[globalState.viewTaskMenuActive].subtasks
-    );
-
-    setTaskStatus(
-      globalState.state.boards[globalState.boardActive].columns.length ===
-        0 ||
-        globalState.state.boards[globalState.boardActive].columns[
-          globalState.viewTaskFrom
-        ].tasks.length === 0
-        ? []
-        : globalState.state.boards[globalState.boardActive].columns[
-            globalState.viewTaskFrom
-          ].tasks[globalState.viewTaskMenuActive].status
-    );
-    isFirstRender.current = false; // toggle flag after first render/mounting
-  }, [globalState, title, desc, subtasks, saveEdit]);
-
   const dispatchTask = (title, desc, taskStatus, subtasks) => {
     globalState.dispatch({
       type: "editTask",
@@ -135,19 +34,17 @@ function ViewTaskMenu() {
       status: taskStatus,
       subtasks: subtasks,
     });
-    setSaveEdit(true);
   };
 
-  const dispatchTaskCheckMark = (subtaskIndex) =>{
-      globalState.dispatch({
-        type: "checkMarkTask",
-        boardIndex: globalState.boardActive,
-        columnsIndex: globalState.viewTaskFrom,
-        taskActive: globalState.viewTaskMenuActive,
-        subtaskIndex:subtaskIndex
-      });
-      setSaveEdit(true);
-    };
+  const dispatchTaskCheckMark = (subtaskIndex) => {
+    globalState.dispatch({
+      type: "checkMarkTask",
+      boardIndex: globalState.boardActive,
+      columnsIndex: globalState.viewTaskFrom,
+      taskActive: globalState.viewTaskMenuActive,
+      subtaskIndex: subtaskIndex,
+    });
+  };
   return (
     <div
       className={` mx-auto left-0 right-0 w-full h-full ${
@@ -156,7 +53,9 @@ function ViewTaskMenu() {
     >
       <div
         className="absolute z-40 mx-auto left-0 right-0 bg-black opacity-50 w-full h-full "
-        onClick={() => globalState.closeTaskMenu()}
+        onClick={() => {
+          globalState.closeTaskMenu();
+        }}
       ></div>
       <div
         className={`absolute top-[80px] mx-auto left-0 right-0 transition-all bg-[white] dark:bg-dark-gray min-w-[264px] max-w-[343px] min-h-[322px] z-40 p-[24px]  rounded-[6px] border-r border-light-lines dark:border-dark-lines `}
@@ -164,7 +63,15 @@ function ViewTaskMenu() {
         <div className="mb-[24px] flex items-center">
           <div className="flex items-center">
             <div className=" dark:text-white text-[18px] font-bold leading-[23px]">
-              {title}
+              {globalState.state.boards[globalState.boardActive].columns
+                .length === 0 ||
+              globalState.state.boards[globalState.boardActive].columns[
+                globalState.viewTaskFrom
+              ].tasks.length === 0
+                ? ""
+                : globalState.state.boards[globalState.boardActive].columns[
+                    globalState.viewTaskFrom
+                  ].tasks[globalState.viewTaskMenuActive].title}
             </div>
             <Menu as="div" className="absoulte ml-[24px]">
               <div>
@@ -192,7 +99,7 @@ function ViewTaskMenu() {
                               ? "bg-gray-100 text-gray-900"
                               : "text-gray-700",
                             "block px-4 py-2 text-sm hover:cursor-pointer"
-                          )} 
+                          )}
                         >
                           Edit
                         </span>
@@ -259,7 +166,7 @@ function ViewTaskMenu() {
                             }
                             name="Subtasks"
                             checked={true}
-                            onChange={()=>dispatchTaskCheckMark(key)}
+                            onChange={() => dispatchTaskCheckMark(key)}
                             borderColor="#FFFFFF"
                             style={{
                               cursor: "pointer",
@@ -285,7 +192,7 @@ function ViewTaskMenu() {
                             }
                             name="Subtasks"
                             checked={false}
-                            onChange={()=>dispatchTaskCheckMark(key)}
+                            onChange={() => dispatchTaskCheckMark(key)}
                             borderColor="#FFFFFF"
                             style={{
                               cursor: "pointer",
@@ -314,7 +221,18 @@ function ViewTaskMenu() {
         >
           <div>
             <Menu.Button className="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-dark-gray text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
-              {taskStatus}
+              {globalState.state.boards[globalState.boardActive].columns
+                  .length === 0 ||
+                globalState.state.boards[globalState.boardActive].columns[
+                  globalState.viewTaskFrom
+                ].tasks.length === 0
+                  || globalState.state.boards[globalState.boardActive].columns[
+                globalState.viewTaskFrom
+              ].tasks[globalState.viewTaskMenuActive].status === ""
+                ? "Set Status"
+                : globalState.state.boards[globalState.boardActive].columns[
+                    globalState.viewTaskFrom
+                  ].tasks[globalState.viewTaskMenuActive].status}
               <ChevronDownIcon
                 className="-mr-1 ml-2 h-5 w-5 text-purple"
                 aria-hidden="true"
@@ -345,9 +263,24 @@ function ViewTaskMenu() {
                       return (
                         <Menu.Item
                           key={key}
-                          onClick={() =>
-                            dispatchTask(title, desc, data.name, subtasks)
-                          }
+                          onClick={() => {
+                            dispatchTask(
+                              globalState.state.boards[globalState.boardActive]
+                                .columns[globalState.viewTaskFrom].tasks[
+                                globalState.viewTaskMenuActive
+                              ].title,
+                              globalState.state.boards[globalState.boardActive]
+                                .columns[globalState.viewTaskFrom].tasks[
+                                globalState.viewTaskMenuActive
+                              ].description,
+                              data.name,
+                              globalState.state.boards[globalState.boardActive]
+                                .columns[globalState.viewTaskFrom].tasks[
+                                globalState.viewTaskMenuActive
+                              ].subtasks
+                            );
+                            globalState.closeTaskMenu();
+                          }}
                         >
                           {({ active }) => (
                             <span

@@ -36,9 +36,6 @@ function App() {
       <TasksColumn columns={globalState.state.boards[globalState.boardActive].columns} />
       </ScrollContainer>
       </div>
-      
-      {/* <div className='w-full h-[100vh] bg-light-bg dark:bg-dark-bg'>
-      </div> */}
     </Layout>
   );
 }

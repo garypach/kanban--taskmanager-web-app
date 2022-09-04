@@ -1,6 +1,5 @@
 import { useContext, Fragment,useState, useRef, useEffect } from "react";
 import { UserContext } from "../Provider/Provider.js";
-import { boardData } from "../../data";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, XIcon } from "@heroicons/react/solid";
 
@@ -43,7 +42,7 @@ function AddTaskMenu() {
   };
 
     
-  const [taskStatus,setTaskStatus] = useState( globalState.state.boards[globalState.boardActive].columns.length === 0 ? "" : boardData.boards[globalState.boardActive].columns[0].name);
+  const [taskStatus,setTaskStatus] = useState( globalState.state.boards[globalState.boardActive].columns.length === 0 ? "" : globalState.state.boards[globalState.boardActive].columns[0].name);
  
   const isFirstRender = useRef(true)
 
@@ -204,7 +203,7 @@ useEffect(() => {
           >
             <Menu.Items className="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg w-full bg-white dark:bg-dark-gray ring-1 dark:text-white ring-black ring-opacity-5 focus:outline-none">
               <div className="py-1">
-              {boardData.boards[globalState.boardActive].columns.map((data,key)=>{
+              {globalState.state.boards[globalState.boardActive].columns.map((data,key)=>{
                 return(
                   <Menu.Item key={key} onClick={()=> setTaskStatus(data.name)}>
                   {({ active }) => (

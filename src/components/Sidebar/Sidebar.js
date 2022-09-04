@@ -1,13 +1,12 @@
-import { useContext,useEffect,useRef,useState} from "react";
+import { useContext,useState} from "react";
 import { UserContext } from "../Provider/Provider.js";
-import { boardData } from "../../data";
 import iconBoard from "../../assets/icon-board.svg";
 import iconDark from "../../assets/icon-dark-theme.svg";
 import iconLight from "../../assets/icon-light-theme.svg";
 import iconHideSideBar from "../../assets/icon-hide-sidebar.svg";
 import Switch from "react-switch";
 function Sidebar() {
-  const isFirstRender = useRef(true)
+
   const globalState = useContext(UserContext);
 
   const [colorTheme,setTheme] = globalState.useLightMode();
@@ -22,25 +21,10 @@ function Sidebar() {
     globalState.setAddNewBoardMenu(true)
   };
 
-  const ActiveBoard = (key) =>{
-    let activeBoard = key;
-    globalState.setBoardActive(activeBoard)
-  }
-
-  useEffect(() =>{
-    if (!isFirstRender.current) { 
-      console.log(globalState.boardActive)
-    }
-  },[globalState.boardActive])
-
-  useEffect(() => { 
-    isFirstRender.current = false // toggle flag after first render/mounting
-  }, [])
-
   return (
     <div className={`hidden transition-all bg-[white] dark:bg-dark-gray  min-w-[261px] h-[100vh] ${globalState.hideSideBar === false ? `relative left-0 ` : `absolute left-[-500px] ` } z-30 pt-[31px] border-r border-light-lines dark:border-dark-lines md:block lg:min-w-[300px]`}>
       <div className="mb-[10px] ml-[24px] lg:ml-[32px] text-medium-gray text-[12px] font-bold leading-[15px] tracking-wide">
-      ALL BOARDS {boardData.boards.length}
+      ALL BOARDS {globalState.state.boards.length}
       </div>
       <div>
         {globalState.state.boards.map((data, key) => {
@@ -50,7 +34,7 @@ function Sidebar() {
               className={`flex items-center pl-[32px] w-[240px] lg:w-[276px] h-[48px] rounded-r-[24px] text-[#828FA3] ${
                 globalState.boardActive === key && globalState.addNewBoardMenu === false ? "bg-purple text-[white]" : ""
               } hover:cursor-pointer`}
-              onClick={() => {ActiveBoard(key);}}
+              onClick={() => globalState.setBoardActive(key)}
             >
               <div className="flex items-center">
                 <div>
@@ -82,7 +66,7 @@ function Sidebar() {
 
             <Switch
               className="mx-[23.67px]"
-              onChange={handleChange}
+              onChange={()=>handleChange()}
               checked={lightMode}
               checkedIcon={false}
               uncheckedIcon={false}

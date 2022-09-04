@@ -1,5 +1,5 @@
 import { UserContext } from "../Provider/Provider.js";
-import { useContext, useState, useEffect, useRef } from "react";
+import { useContext} from "react";
 function DeleteTaskMenu() {
   const globalState = useContext(UserContext);
   const dispatchDeleteTask = () =>{

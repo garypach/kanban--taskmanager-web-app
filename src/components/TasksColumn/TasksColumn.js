@@ -3,6 +3,17 @@ import { UserContext } from "../Provider/Provider.js";
 
 function TasksColumn(props) {
   const globalState = useContext(UserContext);
+  const subtasksCompleteFunc = (subtasks) =>{
+   
+    let complete = 0;
+    for(let i = 0; i < subtasks.length; i++){
+      if(subtasks[i].isCompleted === true){
+        complete ++;
+      }
+    }
+  
+    return complete;
+  }
   return (
     <div className="flex items-start justify-start w-full p-[24px]">
       {props.columns.map((data, key) => {
@@ -12,7 +23,7 @@ function TasksColumn(props) {
             <div>
             {data.tasks.map((data, key) => {
               return(
-               <Tasks key={key} taskTitle={data.title} subtaskslength={data.subtasks.length} taskKey={key} />
+               <Tasks key={key} taskTitle={data.title} subtasksComplete={subtasksCompleteFunc(data.subtasks)} subtaskslength={data.subtasks.length} taskKey={key} />
               );
             })}
             </div>
@@ -38,7 +49,7 @@ function Tasks(props) {
                 {props.taskTitle}
             </div>
             <div className="mt-[8px] text-medium-gray text-[12px] font-bold leading-[15px]">
-                of {props.subtaskslength} subtasks
+                {props.subtasksComplete} of {props.subtaskslength} subtasks
             </div>
         </div>
     </div>

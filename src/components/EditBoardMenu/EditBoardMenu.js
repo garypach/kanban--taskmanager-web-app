@@ -1,10 +1,9 @@
-import { useContext,useEffect,useRef,useState } from "react";
+import { useContext,useEffect,useState } from "react";
 import { UserContext } from "../Provider/Provider.js";
 import { XIcon } from "@heroicons/react/solid";
 
 function EditBoardMenu() {
   const globalState = useContext(UserContext);
-  const [saveEdit,setSaveEdit] = useState(false)
   const [title,setTitle] = useState(globalState.state.boards[globalState.boardActive].name)
   
   const handleTitleInput = (e)=>{
@@ -24,30 +23,17 @@ function EditBoardMenu() {
     setTitleError(false)    
   }
 
-  const[columns,setColumns] = useState(globalState.state.boards[globalState.boardActive].columns)
+  const[columns,setColumns] = useState([...globalState.state.boards[globalState.boardActive].columns])
 
   const addColumns = () => {
     columns.push({ "name": "", "tasks": []});
     setColumns([...columns]);
   };
 
-  
-const isFirstRender = useRef(true)
-
-useEffect(() => {
- 
-  if (!isFirstRender.current && saveEdit) { 
-    setTitle(globalState.state.boards[globalState.boardActive].name)
-    setColumns(globalState.state.boards[globalState.boardActive].columns)
-    setSaveEdit(false)
-  }
-}, [globalState,title,columns,saveEdit])
-
-
-
   useEffect(() => { 
-    isFirstRender.current = false // toggle flag after first render/mounting
-  }, [])
+    setTitle(globalState.state.boards[globalState.boardActive].name)
+    setColumns([...globalState.state.boards[globalState.boardActive].columns])
+  }, [globalState.state.boards,globalState.boardActive])
   
   const dispatchBoard = (name,col) => globalState.dispatch({type: "editBoard", index:globalState.boardActive, name:name, columns:col})
   const saveChanges = () => {
@@ -123,7 +109,7 @@ useEffect(() => {
                    onChange={e => {
                     columns[key].name = e.target.value;
                     setColumns([...columns]);
-                    setSaveEdit(true)
+       
                   }} />
                     </div>
                     <div>
@@ -133,7 +119,7 @@ useEffect(() => {
                 onClick={() => {
                     columns.splice(key,1);
                     setColumns([...columns]);
-                    setSaveEdit(true)
+         
                 }}
                         />
                     </div>
