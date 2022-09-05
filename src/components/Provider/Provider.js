@@ -37,9 +37,15 @@ const UserProvider = ({ children }) => {
     
     useEffect(() =>{
         if (!isFirstRender.current) { 
-          console.log(boardActive)
+          if(boardActive === null){
+            console.log(boardActive)
+          }
+          if(viewTaskMenuActive === null){
+            console.log(viewTaskMenuActive)
+          }
+         
         }
-      },[boardActive])
+      },[boardActive,viewTaskMenuActive])
 
       useEffect(() => { 
         isFirstRender.current = false // toggle flag after first render/mounting
@@ -52,6 +58,7 @@ const UserProvider = ({ children }) => {
     //EditTaskMenu
     const [editTaskMenu, setEditTaskMenu] = useState(false);
     const [editTaskFrom, setEditTaskFrom] = useState(viewTaskMenuActive);
+    
     const closeEditTaskMenu = () =>{
       setEditTaskMenu(false);
       setViewTaskMenuActive(0);

@@ -3,7 +3,16 @@ import { UserContext } from "../Provider/Provider.js";
 
 function DeleteBoardMenu() {
   const globalState = useContext(UserContext);
+  const dispatchDeleteBoard = () =>{
+    globalState.dispatch({type: "deleteBoard", index: globalState.boardActive})
 
+    if(globalState.boardActive !== 0){
+      globalState.setBoardActive(globalState.boardActive-1)
+    }
+
+    globalState.setDeleteBoardMenu(false)
+    
+  };
   return (
     <div
       className={` mx-auto left-0 right-0 w-full h-full ${
@@ -27,7 +36,7 @@ function DeleteBoardMenu() {
             will remove all columns and tasks and cannot be reversed.
           </div>
           <div className="flex flex-col w-full items-center md:flex-row ">
-            <button className="mb-[25px] md:mb-0 md:mr-[16px] bg-red w-full rounded-[20px] py-[8px] px-[126px] md:px-[78.5px] text-white" onClick={() => {globalState.dispatch({type: "deleteBoard", index: globalState.boardActive}); globalState.setBoardActive(globalState.boardActive-1); globalState.setDeleteBoardMenu(false)}}>
+            <button className="mb-[25px] md:mb-0 md:mr-[16px] bg-red w-full rounded-[20px] py-[8px] px-[126px] md:px-[78.5px] text-white" onClick={() => {dispatchDeleteBoard()}}>
               Delete
             </button>
             <button

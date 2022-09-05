@@ -27,9 +27,7 @@ function App() {
       <ViewTaskMenu/>
       <AddTaskMenu/> 
       <DeleteTaskMenu/>
-      {/* 
-       <EditTaskMenu/>
-      */}
+      <EditTaskMenu/>
       <Sidebar/>
       <ShowSideBar/>
       <ScrollContainer className="scroll-container" horizontal={true} hideScrollbars={true} nativeMobileScroll={false}>

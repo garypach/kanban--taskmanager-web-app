@@ -43,7 +43,7 @@ function Tasks(props) {
     globalState.setViewTaskMenuActive(key)
   }
   return (
-    <div className="flex items-center justify-center w-[280px] max-h-[150px] bg-[white] dark:bg-dark-gray px-[16px] py-[23px] rounded-[8px] mt-[28px] hover:cursor-pointer" onClick={() => viewTaskMenu(props.taskKey)} >
+    <div className="flex items-center justify-center w-[280px] max-h-[150px] bg-[white] dark:bg-dark-gray px-[16px] py-[23px] rounded-[8px] mt-[28px] hover:cursor-pointer" onClick={() => {viewTaskMenu(props.taskKey)}} >
         <div className="flex flex-col w-full">
             <div className="text-black dark:text-[white] text-[15px] font-bold leading-[19px]">
                 {props.taskTitle}

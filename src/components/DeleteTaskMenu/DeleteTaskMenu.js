@@ -9,7 +9,13 @@ function DeleteTaskMenu() {
       columnsIndex: globalState.viewTaskFrom,
       taskActive: globalState.viewTaskMenuActive,
     });
+
+    if(globalState.viewTaskMenuActive !== 0){
+      globalState.setViewTaskMenuActive(globalState.viewTaskMenuActive - 1)
+    }
+
     globalState.setDeleteTaskMenu(false)
+    
   };
   return (
     <div

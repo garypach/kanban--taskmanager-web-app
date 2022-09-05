@@ -11,7 +11,6 @@ export const reducer = (state, action) => {
         columns: action.columns,
       };
       state.boards.push(newBoard);
-      console.log(current(state.boards));
       break;
     }
     case "editBoard": {
@@ -65,16 +64,15 @@ export const reducer = (state, action) => {
           state.boards[action.boardIndex].columns[i].tasks.push(task);
         }
       }
-      console.log(current(state.boards));
       break;
     }
     case "deleteTask": {
       const taskIndex = action.taskActive;
-      state.boards[action.boardIndex].columns[action.columnsIndex].tasks.splice(
-        taskIndex,
-        1
-      );
-      console.log(current(state.boards));
+      if (taskIndex === state.boards[action.boardIndex].columns[action.columnsIndex].tasks - 1) {
+        state.boards[action.boardIndex].columns[action.columnsIndex].tasks.pop();
+      } else {
+        state.boards[action.boardIndex].columns[action.columnsIndex].tasks.splice(taskIndex, 1);
+      }
       break;
     }
     case "editTask": {
