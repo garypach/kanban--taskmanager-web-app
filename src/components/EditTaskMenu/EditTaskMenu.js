@@ -82,33 +82,52 @@ function EditTaskMenu() {
 
   useEffect(() => {
     setSaveEdit(false);
-    if(globalState.editTaskMenu === false){
+    if (globalState.editTaskMenu === false) {
       setTitle(
-        globalState.state.boards[globalState.boardActive].columns.length === 0 || globalState.state.boards[globalState.boardActive].columns[
-          globalState.viewTaskFrom
-        ].tasks.length  === 0 ? ""
+        globalState.state.boards[globalState.boardActive].columns.length ===
+          0 ||
+          globalState.state.boards[globalState.boardActive].columns[
+            globalState.viewTaskFrom
+          ].tasks.length === 0
+          ? ""
           : globalState.state.boards[globalState.boardActive].columns[
               globalState.viewTaskFrom
-            ].tasks[globalState.viewTaskMenuActive].title)
-            setDesc(globalState.state.boards[globalState.boardActive].columns.length === 0 || globalState.state.boards[globalState.boardActive].columns[
+            ].tasks[globalState.viewTaskMenuActive].title
+      );
+      setDesc(
+        globalState.state.boards[globalState.boardActive].columns.length ===
+          0 ||
+          globalState.state.boards[globalState.boardActive].columns[
+            globalState.viewTaskFrom
+          ].tasks.length === 0
+          ? ""
+          : globalState.state.boards[globalState.boardActive].columns[
               globalState.viewTaskFrom
-            ].tasks.length  === 0 ? ""
-              : globalState.state.boards[globalState.boardActive].columns[
-                  globalState.viewTaskFrom
-                ].tasks[globalState.viewTaskMenuActive].description)
-      setSubTasks(   globalState.state.boards[globalState.boardActive].columns.length === 0 || globalState.state.boards[globalState.boardActive].columns[
-        globalState.viewTaskFrom
-      ].tasks.length  === 0 ? []
-        : globalState.state.boards[globalState.boardActive].columns[
+            ].tasks[globalState.viewTaskMenuActive].description
+      );
+      setSubTasks(
+        globalState.state.boards[globalState.boardActive].columns.length ===
+          0 ||
+          globalState.state.boards[globalState.boardActive].columns[
             globalState.viewTaskFrom
-          ].tasks[globalState.viewTaskMenuActive].subtasks)
+          ].tasks.length === 0
+          ? []
+          : globalState.state.boards[globalState.boardActive].columns[
+              globalState.viewTaskFrom
+            ].tasks[globalState.viewTaskMenuActive].subtasks
+      );
 
-          setTaskStatus(globalState.state.boards[globalState.boardActive].columns.length === 0 || globalState.state.boards[globalState.boardActive].columns[
+      setTaskStatus(
+        globalState.state.boards[globalState.boardActive].columns.length ===
+          0 ||
+          globalState.state.boards[globalState.boardActive].columns[
             globalState.viewTaskFrom
-          ].tasks.length  === 0 ? []
-            : globalState.state.boards[globalState.boardActive].columns[
-                globalState.viewTaskFrom
-              ].tasks[globalState.viewTaskMenuActive].status)
+          ].tasks.length === 0
+          ? []
+          : globalState.state.boards[globalState.boardActive].columns[
+              globalState.viewTaskFrom
+            ].tasks[globalState.viewTaskMenuActive].status
+      );
     }
     isFirstRender.current = false; // toggle flag after first render/mounting
   }, [globalState, title, desc, subtasks, saveEdit]);
@@ -310,7 +329,7 @@ function EditTaskMenu() {
         </Menu>
         <button
           className=" bg-purple w-full rounded-[20px] py-[8px] pb-[9px] px-[87px] text-white text-[13px]"
-          onClick={()=> saveChanges()}
+          onClick={() => saveChanges()}
         >
           Save Changes
         </button>
