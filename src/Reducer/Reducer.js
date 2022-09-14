@@ -11,6 +11,7 @@ export const reducer = (state, action) => {
         columns: action.columns,
       };
       state.boards.push(newBoard);
+      
       break;
     }
     case "editBoard": {

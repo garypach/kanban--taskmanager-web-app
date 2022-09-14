@@ -23,9 +23,9 @@ function MobileMenu() {
 
   
   return (
-    <div className={` mx-auto left-0 right-0 w-full h-full ${globalState.mobileMenuActive === true ? `absolute` : 'hidden'} md:hidden`}>
+    <div className={` mx-auto left-0 right-0 w-full h-full  ${globalState.mobileMenuActive === true ? `absolute` : 'hidden'} md:hidden`}>
         <div className="absolute z-20 mx-auto left-0 right-0 bg-black opacity-50 w-full h-full " onClick={() => globalState.setMobileMenuActive(false)}></div>
-    <div className={`absolute top-[80px] mx-auto left-0 right-0 transition-all bg-[white] dark:bg-dark-gray w-[264px] h-[322px] z-30 py-[16px] border-r border-light-lines dark:border-dark-lines lg:hidden`}>
+    <div className={`absolute top-[80px] mx-auto left-0 right-0 transition-all bg-[white] dark:bg-dark-gray w-[264px] h-[322px] z-30 py-[16px] border-r border-light-lines dark:border-dark-lines rounded-[24px] lg:hidden`}>
       <div className="mb-[10px] ml-[24px] lg:ml-[32px] text-medium-gray text-[12px] font-bold leading-[15px] tracking-wide">
       ALL BOARDS ({boardData.boards.length})
       </div>

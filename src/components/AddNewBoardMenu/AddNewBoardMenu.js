@@ -40,9 +40,12 @@ function AddNewBoardMenu() {
   const isFirstRender = useRef(true)
 
 useEffect(() => {
-  if (!isFirstRender.current && createBoard) { 
+  if(createBoard){
+    setTitle('')
+    setColumns([])
     setCreateBoard(false)
   }
+
 }, [createBoard])
 
   useEffect(() => { 
@@ -55,10 +58,6 @@ useEffect(() => {
       dispatchBoard(title,columns)
       setCreateBoard(true)
       globalState.setAddNewBoardMenu(false);
-      if(globalState.addNewBoardMenu === false){
-        setTitle('')
-        setColumns([])
-      }
     }else{
       setTitleError(true)
     }

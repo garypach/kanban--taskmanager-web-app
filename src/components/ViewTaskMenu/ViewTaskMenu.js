@@ -60,8 +60,9 @@ function ViewTaskMenu() {
       <div
         className={`absolute top-[80px] mx-auto left-0 right-0 transition-all bg-[white] dark:bg-dark-gray min-w-[264px] max-w-[343px] min-h-[322px] z-40 p-[24px]  rounded-[6px] border-r border-light-lines dark:border-dark-lines `}
       >
-        <div className="mb-[24px] flex items-center">
-          <div className="flex items-center">
+  
+        <div className="mb-[24px] flex items-center relative">
+          <div className="flex items-center justify-between w-full">
             <div className=" dark:text-white text-[18px] font-bold leading-[23px]">
               {globalState.state.boards[globalState.boardActive].columns
                 .length === 0 ||

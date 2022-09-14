@@ -82,7 +82,8 @@ function EditTaskMenu() {
 
   useEffect(() => {
     setSaveEdit(false);
-    if (globalState.editTaskMenu === false) {
+    if (globalState.editTaskMenu === false && globalState.changeBoard === true) {
+      
       setTitle(
         globalState.state.boards[globalState.boardActive].columns.length ===
           0 ||
@@ -128,6 +129,7 @@ function EditTaskMenu() {
               globalState.viewTaskFrom
             ].tasks[globalState.viewTaskMenuActive].status
       );
+      globalState.setChangeBoard(false)
     }
     isFirstRender.current = false; // toggle flag after first render/mounting
   }, [globalState, title, desc, subtasks, saveEdit]);

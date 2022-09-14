@@ -18,7 +18,7 @@ function Header(props) {
   const globalState = useContext(UserContext);
 
   return (
-    <div className="bg-white dark:bg-dark-gray w-full flex justify-center items-center min-h-[64px] sticky top-0 z-50 md:min-h-[81px] lg:min-h-[96px] lg:relative">
+    <div className="bg-white dark:bg-dark-gray w-full  flex justify-center items-center min-h-[64px] sticky top-0 z-50 md:min-h-[81px] lg:min-h-[96px] lg:relative">
       <nav className="text-[black] dark:text-[white] w-full flex justify-between items-center px-[16px] md:px-[26px] lg:px-[34px]">
         <div className="flex items-center">
           <div className="hover:cursor-pointer">
@@ -34,7 +34,7 @@ function Header(props) {
               alt="logo-dark"
             />
           </div>
-          <div className="hidden w-[1px] ml-[82.47px] mr-[24px] md:block md:min-h-[81px] lg:min-h-[96px] lg:ml-[113.47px]  dark:bg-dark-lines bg-light-lines"></div>
+          <div className="hidden w-[1px] transition-all ml-[82.47px] mr-[24px] md:block md:min-h-[81px] lg:min-h-[96px] lg:ml-[113.47px]  dark:bg-dark-lines bg-light-lines"></div>
           <div className="hidden ml-[16px] md:ml-0 md:block">
             {globalState.state.boards[globalState.boardActive].name}
           </div>

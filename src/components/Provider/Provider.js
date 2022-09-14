@@ -33,6 +33,7 @@ const UserProvider = ({ children }) => {
 
     //current board
     const [boardActive, setBoardActive] = useState(0);
+    const [changeBoard, setChangeBoard] = useState(false);
     const isFirstRender = useRef(true)
     
     useEffect(() =>{
@@ -125,7 +126,8 @@ const UserProvider = ({ children }) => {
            editBoardMenu, 
            setEditBoardMenu,
            closeTaskMenu,
-           closeEditTaskMenu
+           closeEditTaskMenu,
+           changeBoard, setChangeBoard
            }}>
         {children}
       </UserContext.Provider>

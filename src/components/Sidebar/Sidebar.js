@@ -22,7 +22,7 @@ function Sidebar() {
   };
 
   return (
-    <div className={`hidden transition-all bg-[white] dark:bg-dark-gray  min-w-[261px] h-[100vh] ${globalState.hideSideBar === false ? `relative left-0 ` : `absolute left-[-500px] ` } z-30 pt-[31px] border-r border-light-lines dark:border-dark-lines md:block lg:min-w-[300px]`}>
+    <div className={`hidden bg-[white] dark:bg-dark-gray transition-all min-w-[262px] max-w-[262px] h-[100vh] ${globalState.hideSideBar === false ? `relative left-0 ` : `absolute left-[-500px] ` } z-30 pt-[31px] border-r  border-light-lines dark:border-dark-lines md:block lg:min-w-[301px] lg:max-w-[301px]`}>
       <div className="mb-[10px] ml-[24px] lg:ml-[32px] text-medium-gray text-[12px] font-bold leading-[15px] tracking-wide">
       ALL BOARDS {globalState.state.boards.length}
       </div>
@@ -34,7 +34,7 @@ function Sidebar() {
               className={`flex items-center pl-[32px] w-[240px] lg:w-[276px] h-[48px] rounded-r-[24px] text-[#828FA3] ${
                 globalState.boardActive === key && globalState.addNewBoardMenu === false ? "bg-purple text-[white]" : ""
               } hover:cursor-pointer`}
-              onClick={() => globalState.setBoardActive(key)}
+              onClick={() => {globalState.setBoardActive(key); globalState.setChangeBoard(true) }}
             >
               <div className="flex items-center">
                 <div>
