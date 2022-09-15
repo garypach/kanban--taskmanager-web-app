@@ -42,7 +42,8 @@ function AddTaskMenu() {
   };
 
     
-  const [taskStatus,setTaskStatus] = useState( globalState.state.boards[globalState.boardActive].columns.length === 0 ? "" : globalState.state.boards[globalState.boardActive].columns[0].name);
+  const [taskStatus,setTaskStatus] = useState(
+    "Set Status");
  
   const isFirstRender = useRef(true)
 
@@ -53,6 +54,7 @@ useEffect(() => {
     setDesc('')
     setSubTasks([])
     setCreateTask(false)
+    setTaskStatus("Set Status")
   }
 }, [createTask])
 
@@ -64,12 +66,10 @@ useEffect(() => {
   const dispatchTask = (title,desc,taskStatus,subtasks) => globalState.dispatch({type: "addTask", boardIndex:globalState.boardActive, title:title, description:desc, status:taskStatus, subtasks:subtasks})
 
   const saveNewTask = () => {
-    if(checkForTitle() === true){
+    if(checkForTitle() === true && taskStatus !== "Set Status"){
       setCreateTask(true)
       dispatchTask(title,desc,taskStatus,subtasks)
       globalState.setAddTaskMenu(false);
-    }else{
-      setTitleError(true)
     }
 
   };
@@ -182,7 +182,7 @@ useEffect(() => {
           Current Status
         </div>
         <Menu as="div" className="relative inline-block text-left w-full mb-[24px]">
-          <div>
+        <div>
             <Menu.Button className="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-dark-gray text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
               {taskStatus}
               <ChevronDownIcon

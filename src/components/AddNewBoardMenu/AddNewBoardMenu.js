@@ -51,15 +51,23 @@ useEffect(() => {
   useEffect(() => { 
     isFirstRender.current = false // toggle flag after first render/mounting
   }, [])
+  const [columnCheck, setColumnCheck] = useState(false);
 
+  const checkColumnTitles=(colArr)=> {
+    for(let i = 0; i < colArr.length; i++){
+      if(colArr[i].name.length < 1){
+        setColumnCheck(true)
+        return false
+      }
+    }
+    return true
+  }
   const dispatchBoard = (name,col) => globalState.dispatch({type: "addBoard", name:name, columns:col})
   const saveNewBoard = () => {
-    if(checkForTitle() === true){
+    if(checkForTitle() === true && checkColumnTitles(columns) === true){
       dispatchBoard(title,columns)
       setCreateBoard(true)
       globalState.setAddNewBoardMenu(false);
-    }else{
-      setTitleError(true)
     }
 
   };
@@ -131,6 +139,10 @@ useEffect(() => {
                     className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                     focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
                    "
+                    onFocus={(e) => {
+                   
+                      setColumnCheck(false)
+                    }}
                     value={data.name}
                     placeholder="e.g. Web Design"
                     onChange={(e) => {
@@ -153,6 +165,13 @@ useEffect(() => {
               </div>
             );
           })}
+            <p
+                className={`mt-2 text-white text-sm ${
+                  columnCheck ? "visible" : "invisible"
+                }`}
+              >
+                Columns must have names.
+              </p>
         </div>
         <button
           className="mb-[24px] bg-light-lines w-full rounded-[20px] py-[8px] pb-[9px] px-[85px] text-purple text-[13px] font-bold"

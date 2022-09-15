@@ -10,15 +10,17 @@ function EditBoardMenu() {
     setTitle(e.target.value)
   }
   const[titleError,setTitleError] = useState(false)
-  const checkForTitle =(e)=>{
-      function titleValid(text){
-          return /^[a-z ,.'-]+$/i.test(text)
-      }
-      if(titleValid(title)){
-      }else{
-        setTitleError(true)
-      }
-  }
+  const checkForTitle = (e) => {
+    function titleValid(text) {
+      return /^[a-z ,.'-]+$/i.test(text);
+    }
+    if (titleValid(title)) {
+      return true
+    } else {
+      setTitleError(true);
+      return false
+    }
+  };
   const removeTitleError =(e)=>{
     setTitleError(false)    
   }
@@ -34,14 +36,22 @@ function EditBoardMenu() {
     setTitle(globalState.state.boards[globalState.boardActive].name)
     setColumns([...globalState.state.boards[globalState.boardActive].columns])
   }, [globalState.state.boards,globalState.boardActive])
-  
+  const [columnCheck, setColumnCheck] = useState(false);
+
+  const checkColumnTitles=(colArr)=> {
+    for(let i = 0; i < colArr.length; i++){
+      if(colArr[i].name.length < 1){
+        setColumnCheck(true)
+        return false
+      }
+    }
+    return true
+  }
   const dispatchBoard = (name,col) => globalState.dispatch({type: "editBoard", index:globalState.boardActive, name:name, columns:col})
   const saveChanges = () => {
-    if(titleError === false){
+    if(checkForTitle() === true && checkColumnTitles(columns) === true){
       dispatchBoard(title,columns)
       globalState.setEditBoardMenu(false)
-    }else{
-      setTitleError(true)
     }
 
   };
@@ -127,6 +137,13 @@ function EditBoardMenu() {
             </div>
             );
           })}
+                <p
+                className={`mt-2 text-white text-sm ${
+                  columnCheck ? "visible" : "invisible"
+                }`}
+              >
+                Columns must have names.
+              </p>
         </div>
         <button className="mb-[24px] bg-light-lines w-full rounded-[20px] py-[8px] pb-[9px] px-[85px] text-purple text-[13px] font-bold" onClick={addColumns}>
         + Add New Column

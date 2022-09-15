@@ -6,10 +6,18 @@ export const initialState = boardData;
 export const reducer = (state, action) => {
   switch (action.type) {
     case "addBoard": {
-      const newBoard = {
-        name: action.name,
-        columns: action.columns,
-      };
+
+      const newBoard = {};
+      Object.defineProperties(newBoard, {
+        name: {
+          value: action.name,
+          writable: true,
+        },
+        columns: {
+          value: action.columns,
+          writable: true,
+        },
+      });
       state.boards.push(newBoard);
       
       break;
